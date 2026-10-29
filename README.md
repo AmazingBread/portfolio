@@ -122,3 +122,10 @@ MapView에서 SET_MAP으로 공유한 지도와 센서 목록을 기반으로 �
 ![도시안전ON CCTV 실제 구동 화면](assets/city-safety/cctv-operation.png)
 
 운영 화면의 091_안락 CCTV 영상과 재생 종료 카운트다운입니다. [CCTV 기능 설명 및 실행 샘플](https://amazingbread.github.io/city-safety-on/#cctv)에서 원본 Vue 컴포넌트와 HLS 재생·정지·자원 해제 흐름을 확인할 수 있습니다. 실행 샘플 카메라는 산책로강변교_남이며 이미지와 구분합니다.
+
+
+## 04. 스윔바이러스 · 개인 프로젝트
+
+Nuxt 4 · Vue 3 · Supabase 기반 수영 정보 및 강의 신청 프로젝트입니다. 강의 신청·관리 API, 데이터베이스 마이그레이션과 테스트를 구현했습니다. 배포 URL·실제 화면·CI/CD 구성은 확인 후 상세 근거를 추가합니다.
+
+[프로젝트 소개](https://amazingbread.github.io/city-safety-on/#swimvirus)

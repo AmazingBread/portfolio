@@ -1,4 +1,5 @@
 const names = {
+  swimvirus: '스윔바이러스 · 개인 프로젝트',
   overview: '소개 · 프로젝트',
   city: '부산 도시안전ON',
   cctv: 'HLS 기반 실시간 CCTV',
@@ -8,6 +9,7 @@ const names = {
   asiad: '아시아드 풍향·풍속',
 };
 const loaders = {
+  swimvirus: () => import('../projects/swimvirus/index.js'),
   overview: () => import('./components/overview.js'),
   city: () => import('../projects/city-safety/index.js'),
   cctv: () => import('./components/cctv.js'),
