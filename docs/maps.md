@@ -1,5 +1,3 @@
-# 지도
+# 실제 지도 컴포넌트
 
-독립 Leaflet 지도 인스턴스를 생성하고 ResizeObserver로 크기를 보정합니다. 대상 전환 시 기존 마커를 제거하고 새 핀과 영구 이름표를 표시합니다. 운영 위치 대신 가상 위치를 사용합니다.
-
-구현: [src/components/maps.js](../src/components/maps.js)
+원 프로젝트 BuildingLocationMap.vue의 EPSG:5181·카카오 타일 설정과 지도 수명 관리 로직을 사용합니다. 공개 화면의 건물명·좌표만 예시 값입니다. 원본 파일과 실행 어댑터를 구분합니다.

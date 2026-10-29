@@ -1,285 +1,99 @@
+import WindSpeed from './source/WindSpeed.js';
+import WindDirection from './source/WindDirection.js';
+import WindDirectionSpeed from './source/WindDirectionSpeed.js';
 import { pageHeader, story } from '../../src/lib/ui.js';
-import { makeWindData, windVector, maxWind } from './data.js';
 export function mount(root) {
   root.innerHTML =
     pageHeader(
-      '05',
+      'PROJECT 02',
       '아시아드 풍향·풍속 모니터링',
-      'D3 시계열·극좌표·벡터 시각화를 함께 구성한 두 번째 프로젝트입니다.',
-      ['D3.js 7', 'SVG / Scale / Axis', '풍향 벡터', '가상 데이터']
+      '원본 Vue + D3 컴포넌트와 실제 API 측정값으로 구현 근거를 확인합니다.',
+      ['Vue 2', 'D3.js 7', '실제 측정 스냅샷']
     ) +
-    '<section class="card wind-controls"><div><h2>기상 센서 대시보드</h2><p class="muted">원본 D3 구현을 바탕으로 재구성한 공개 데모 · 실제 아시아드 측정 데이터 아님</p></div><div class="controls"><label>조회 기간 <select id="wind-period"><option value="1">1일</option><option value="7" selected>7일</option><option value="30">30일</option></select></label><button class="btn small" id="wind-reload">가상 데이터 조회</button><button class="btn primary small" id="wind-live" aria-pressed="false">갱신 시뮬레이션 OFF</button></div></section>' +
-    ['풍속 그래프', '돌풍속 그래프', '풍향 그래프', '돌풍향 그래프']
-      .map(
-        (title, i) =>
-          '<section class="card wind-card"><div class="card-heading"><h2>' +
-          title +
-          '</h2><span class="pill">' +
-          (i < 2 ? 'TIME SERIES' : 'POLAR + VECTOR') +
-          '</span></div><div class="wind-chart-row"><div class="wind-svg-wrap" data-chart="' +
-          i +
-          '"></div><div class="wind-max" data-summary="' +
-          i +
-          '"></div></div></section>'
-      )
-      .join('') +
-    '<div class="wind-tooltip" role="status" hidden></div>' +
+    '<div id="asiad-original"></div>' +
     story(
-      '시간에 따른 풍속 변화뿐 아니라 방향과 강도를 함께 표현해야 합니다.',
-      'D3 scaleUtc·scaleLinear·axis·line으로 시계열을, 삼각함수로 극좌표와 시간축 벡터를 그립니다. 최대값은 같은 배열에서 계산합니다.',
-      '기간을 바꾸고 선 위에 마우스를 올려 측정값을 확인하세요. 갱신 시뮬레이션은 5초마다 가상 데이터를 한 건씩 추가합니다.'
+      '풍속의 시간 변화와 풍향·강도를 같은 화면에서 읽을 수 있어야 했습니다.',
+      '원 프로젝트의 WindSpeed.vue, WindDirection.vue, WindDirectionSpeed.vue를 그대로 사용합니다. 차트 컴포넌트에 실제 측정값을 props로 전달합니다.',
+      '축·최대값·풍향 벡터를 확인하세요. 날짜 범위를 줄이면 원본 컴포넌트를 새 데이터로 다시 생성합니다. 실시간 조회가 아닌 저장된 스냅샷입니다.'
     );
-  let rows = makeWindData(),
-    timer = null,
-    alive = true;
-  const d3 = window.d3;
-  const tooltip = root.querySelector('.wind-tooltip');
-  let lastSize = 0;
-  const format = d3.utcFormat('%m/%d %H:%M');
-  function render() {
-    if (!alive) return;
-    for (let chart = 0; chart < 4; chart++) {
-      const key = chart % 2 ? 'gust' : 'speed',
-        direction = chart % 2 ? 'gustDirection' : 'direction',
-        max = maxWind(rows, key);
-      const host = root.querySelector('[data-chart="' + chart + '"]');
-      const width = Math.max(420, host.clientWidth),
-        height = chart < 2 ? 160 : 190;
-      const svg = d3
-        .select(host)
-        .selectAll('svg')
-        .data([null])
-        .join('svg')
-        .attr('viewBox', [0, 0, width, height])
-        .attr('role', 'img')
-        .attr(
-          'aria-label',
-          ['풍속', '돌풍속', '풍향', '돌풍향'][chart] + ' 가상 데이터 그래프'
+  let alive = true;
+  const vm = new Vue({
+    components: { WindSpeed, WindDirection, WindDirectionSpeed },
+    data: () => ({ items: [], meta: null, error: '', period: 'all', version: 0 }),
+    computed: {
+      filtered() {
+        if (!this.items.length) return [];
+        if (this.period === 'all') return this.items;
+        const last = Date.parse(this.items.at(-1).measureDatetime);
+        return this.items.filter(
+          (r) => Date.parse(r.measureDatetime) >= last - Number(this.period) * 86400000
         );
-      svg.selectAll('*').remove();
-      const margin = { left: chart < 2 ? 45 : 205, right: 24, top: 24, bottom: 38 };
-      const x = d3
-        .scaleUtc()
-        .domain(d3.extent(rows, (d) => d.date))
-        .range([margin.left, width - margin.right]);
-      const y = d3
-        .scaleLinear()
-        .domain([0, d3.max(rows, (d) => d[key]) * 1.15])
-        .nice()
-        .range([height - margin.bottom, margin.top]);
-      const base = chart < 2 ? height - margin.bottom : 85;
-      svg
-        .append('g')
-        .attr('transform', 'translate(0,' + (height - margin.bottom) + ')')
-        .call(
-          d3
-            .axisBottom(x)
-            .ticks(Math.max(2, Math.floor((width - margin.left) / 125)))
-            .tickFormat(d3.utcFormat('%m/%d %H:%M'))
-            .tickSizeOuter(0)
-        );
-      if (chart < 2) {
-        svg
-          .append('g')
-          .attr('transform', 'translate(' + margin.left + ',0)')
-          .call(d3.axisLeft(y).ticks(4))
-          .call((g) => g.select('.domain').remove())
-          .call((g) =>
-            g
-              .selectAll('.tick line')
-              .attr('x2', width - margin.left - margin.right)
-              .attr('stroke', '#e5ecf3')
-          );
-        svg
-          .append('path')
-          .datum(rows)
-          .attr('fill', 'none')
-          .attr('stroke', '#1788ff')
-          .attr('stroke-width', 1.4)
-          .attr(
-            'd',
-            d3
-              .line()
-              .x((d) => x(d.date))
-              .y((d) => y(d[key]))
-          );
-        svg
-          .append('circle')
-          .attr('cx', x(max.date))
-          .attr('cy', y(max[key]))
-          .attr('r', 3)
-          .attr('fill', '#fa8d25');
-      } else {
-        const radius = 61,
-          cx = 86,
-          cy = 85;
-        const radial = d3
-          .scaleLinear()
-          .domain([0, d3.max(rows, (d) => d[key])])
-          .range([0, radius]);
-        const polar = svg.append('g').attr('transform', 'translate(' + cx + ',' + cy + ')');
-        for (const r of [radius / 2, radius])
-          polar
-            .append('circle')
-            .attr('r', r)
-            .attr('fill', 'none')
-            .attr('stroke', '#b6c9db')
-            .attr('stroke-dasharray', '2 3');
-        polar
-          .append('path')
-          .attr('d', 'M-' + radius + ' 0H' + radius + ' M0 -' + radius + 'V' + radius)
-          .attr('stroke', '#b6c9db')
-          .attr('stroke-dasharray', '2 3');
-        [
-          ['N', 0, -radius - 10],
-          ['E', radius + 12, 4],
-          ['S', 0, radius + 17],
-          ['W', -radius - 12, 4],
-        ].forEach(([name, px, py]) =>
-          polar
-            .append('text')
-            .attr('x', px)
-            .attr('y', py)
-            .attr('text-anchor', 'middle')
-            .text(name)
-        );
-        polar
-          .selectAll('.wind-point')
-          .data(rows)
-          .join('circle')
-          .attr('class', 'wind-point')
-          .attr('cx', (d) => windVector(radial(d[key]), d[direction]).x)
-          .attr('cy', (d) => windVector(radial(d[key]), d[direction]).y)
-          .attr('r', 1.5)
-          .attr('fill', '#1788ff')
-          .attr('opacity', 0.27);
-        const v = windVector(radial(max[key]), max[direction]);
-        polar
-          .append('circle')
-          .attr('cx', v.x)
-          .attr('cy', v.y)
-          .attr('r', 3)
-          .attr('fill', '#f65166');
-        svg
-          .append('line')
-          .attr('x1', margin.left)
-          .attr('x2', width - margin.right)
-          .attr('y1', base)
-          .attr('y2', base)
-          .attr('stroke', '#b6dce8');
-        const length = d3
-          .scaleLinear()
-          .domain([0, d3.max(rows, (d) => d[key])])
-          .range([0, 55]);
-        svg
-          .append('g')
-          .selectAll('line')
-          .data(rows.filter((_, i) => i % Math.max(1, Math.floor(rows.length / 450)) === 0))
-          .join('line')
-          .attr('x1', (d) => x(d.date))
-          .attr('y1', base)
-          .attr('x2', (d) => x(d.date) + windVector(length(d[key]), d[direction]).x)
-          .attr('y2', (d) => base + windVector(length(d[key]), d[direction]).y)
-          .attr('stroke', '#00b8df')
-          .attr('stroke-width', 0.8);
-        const arrow = windVector(length(max[key]), max[direction]);
-        svg
-          .append('line')
-          .attr('x1', x(max.date))
-          .attr('y1', base)
-          .attr('x2', x(max.date) + arrow.x)
-          .attr('y2', base + arrow.y)
-          .attr('stroke', '#ed4660')
-          .attr('stroke-width', 2);
-      }
-      const summary = root.querySelector('[data-summary="' + chart + '"]');
-      summary.innerHTML =
-        '<span>최대 ' +
-        (key === 'gust' ? '돌풍속' : '풍속') +
-        ' 시각 (UTC)</span><strong>' +
-        format(max.date) +
-        '</strong><span>최대 ' +
-        (key === 'gust' ? '돌풍속' : '풍속') +
-        '</span><strong>' +
-        max[key].toFixed(2) +
-        ' <small>m/s</small></strong>' +
-        (chart >= 2
-          ? '<span>풍향</span><strong>' +
-            max[direction].toFixed(1) +
-            ' <small>°</small></strong>'
-          : '');
-      svg
-        .on('pointermove', (event) => {
-          const px = d3.pointer(event)[0];
-          if (px < margin.left) return;
-          const i = Math.min(
-              rows.length - 1,
-              d3.bisector((d) => d.date).center(rows, x.invert(px))
-            ),
-            row = rows[i];
-          tooltip.textContent =
-            format(row.date) +
-            ' UTC · ' +
-            row[key].toFixed(2) +
-            ' m/s · ' +
-            row[direction].toFixed(1) +
-            '°';
-          tooltip.style.left =
-            Math.min(window.innerWidth - 310, Math.max(8, event.clientX + 12)) + 'px';
-          tooltip.style.top = Math.max(8, event.clientY - 40) + 'px';
-          tooltip.hidden = false;
-        })
-        .on('pointerleave', () => {
-          tooltip.hidden = true;
-        });
-    }
-  }
-  function reload() {
-    rows = makeWindData(Number(root.querySelector('#wind-period').value));
-    render();
-  }
-  root.querySelector('#wind-period').onchange = reload;
-  root.querySelector('#wind-reload').onclick = reload;
-  root.querySelector('#wind-live').onclick = () => {
-    const button = root.querySelector('#wind-live');
-    if (timer) {
-      clearInterval(timer);
-      timer = null;
-      button.textContent = '갱신 시뮬레이션 OFF';
-      button.setAttribute('aria-pressed', 'false');
-    } else {
-      button.textContent = '갱신 시뮬레이션 ON';
-      button.setAttribute('aria-pressed', 'true');
-      timer = setInterval(() => {
-        const last = rows.at(-1),
-          speed = Math.max(0, last.speed + (Math.random() - 0.5) * 0.5);
-        rows = [
-          ...rows.slice(1),
-          {
-            date: new Date(+last.date + 600000),
-            speed,
-            gust: speed * 2.8 + 0.7,
-            direction: (last.direction + 13) % 360,
-            gustDirection: (last.gustDirection + 17) % 360,
-          },
-        ];
-        render();
-      }, 5000);
-    }
-  };
-  const observer = new ResizeObserver((entries) => {
-    const w = Math.floor(entries[0].contentRect.width);
-    if (w !== lastSize) {
-      lastSize = w;
-      render();
-    }
-  });
-  observer.observe(root);
-  render();
+      },
+      speed() {
+        return this.filtered.map((r) => ({ date: r.measureDatetime, speed: r.ws10m }));
+      },
+      gust() {
+        return this.filtered.map((r) => ({ date: r.measureDatetime, speed: r.wsGust }));
+      },
+      direction() {
+        return this.filtered.map((r) => ({
+          date: r.measureDatetime,
+          speed: r.ws10m,
+          direction: r.wd10m,
+        }));
+      },
+      gustDirection() {
+        return this.filtered.map((r) => ({
+          date: r.measureDatetime,
+          speed: r.wsGust,
+          direction: r.wdGust,
+        }));
+      },
+      peak() {
+        return this.filtered.reduce((a, b) => (!a || b.ws10m >= a.ws10m ? b : a), null);
+      },
+      gustPeak() {
+        return this.filtered.reduce((a, b) => (!a || b.wsGust >= a.wsGust ? b : a), null);
+      },
+    },
+    methods: {
+      format(date) {
+        return new Intl.DateTimeFormat('sv-SE', {
+          timeZone: 'Asia/Seoul',
+          year: '2-digit',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        }).format(new Date(date));
+      },
+    },
+    template: `<div class="asiad-original">
+ <div class="card source-proof"><div><h2>원본 컴포넌트로 렌더링</h2><p>데이터: 사용자 제공 API의 실제 응답 · 실시간 연결 아님 · KST</p><p v-if="meta">스냅샷 {{format(meta.capturedAt)}} / 원본 {{items.length.toLocaleString()}}건 / 표시 {{filtered.length.toLocaleString()}}건</p></div><label>조회 범위 <select v-model="period" @change="version++"><option value="all">전체 스냅샷</option><option value="1">마지막 1일</option><option value="3">마지막 3일</option></select></label></div>
+ <p v-if="error" role="alert">{{error}}</p><p v-else-if="!items.length" role="status">측정 스냅샷을 불러옵니다…</p>
+ <template v-else>
+ <section class="original-wind-row"><h3>풍속 그래프</h3><div class="original-wind-box"><div class="original-line"><wind-speed :key="'speed'+version" :wind-speed="speed"/></div><div class="original-summary"><span>최대 풍속 시간</span><strong>{{format(peak.measureDatetime)}}</strong><span>최대 풍속</span><strong>{{peak.ws10m.toFixed(2)}}<small> m/s</small></strong></div></div></section>
+ <section class="original-wind-row"><h3>돌풍속 그래프</h3><div class="original-wind-box"><div class="original-line"><wind-speed :key="'gust'+version" :wind-speed="gust"/></div><div class="original-summary"><span>최대 돌풍속 시간</span><strong>{{format(gustPeak.measureDatetime)}}</strong><span>최대 돌풍속</span><strong>{{gustPeak.wsGust.toFixed(2)}}<small> m/s</small></strong></div></div></section>
+ <section class="original-wind-row"><h3>풍향 그래프</h3><div class="original-wind-box"><div class="original-polar"><wind-direction :key="'direction'+version" :wind-direction="direction"/></div><div class="original-vector"><wind-direction-speed :key="'vector'+version" :wind-direction-speed="direction"/></div><div class="original-summary"><span>최대 풍속 시간</span><strong>{{format(peak.measureDatetime)}}</strong><span>최대 풍속 / 풍향</span><strong>{{peak.ws10m.toFixed(2)}}<small> m/s</small></strong><strong>{{peak.wd10m.toFixed(1)}}°</strong></div></div></section>
+ <section class="original-wind-row"><h3>돌풍향 그래프</h3><div class="original-wind-box"><div class="original-polar"><wind-direction :key="'gust-direction'+version" :wind-direction="gustDirection"/></div><div class="original-vector"><wind-direction-speed :key="'gust-vector'+version" :wind-direction-speed="gustDirection"/></div><div class="original-summary"><span>최대 돌풍속 시간</span><strong>{{format(gustPeak.measureDatetime)}}</strong><span>최대 돌풍속 / 풍향</span><strong>{{gustPeak.wsGust.toFixed(2)}}<small> m/s</small></strong><strong>{{gustPeak.wdGust.toFixed(1)}}°</strong></div></div></section>
+ </template><p class="source-links"><a href="https://github.com/AmazingBread/city-safety-on/tree/main/projects/asiad-wind/source" target="_blank" rel="noopener noreferrer">원본 Vue/D3 컴포넌트 코드 ↗</a> · <a href="./projects/asiad-wind/data/measurement-snapshot.json" target="_blank" rel="noopener noreferrer">사용한 실제 측정 데이터 ↗</a></p>
+ </div>`,
+  }).$mount(root.querySelector('#asiad-original'));
+  fetch(new URL('./data/measurement-snapshot.json', import.meta.url))
+    .then((r) => {
+      if (!r.ok) throw Error('스냅샷을 불러오지 못했습니다.');
+      return r.json();
+    })
+    .then((data) => {
+      if (!alive) return;
+      vm.meta = data;
+      vm.items = data.items;
+    })
+    .catch((e) => {
+      if (alive) vm.error = e.message;
+    });
   return () => {
     alive = false;
-    clearInterval(timer);
-    observer.disconnect();
-    tooltip.remove();
+    vm.$destroy();
   };
 }

@@ -1,13 +1,15 @@
 const names = {
-  overview: '프로젝트 소개',
-  cctv: 'CCTV 플레이어',
+  overview: '소개 · 프로젝트',
+  city: '부산 도시안전ON',
+  cctv: 'HLS 기반 실시간 CCTV',
   graphs: '대용량 그래프',
-  maps: '지도 인터랙션',
-  markers: '마커 & 클러스터',
+  maps: '지도 컴포넌트 · GIS',
+  markers: 'Vuex 지도 상태 동기화',
   asiad: '아시아드 풍향·풍속',
 };
 const loaders = {
   overview: () => import('./components/overview.js'),
+  city: () => import('../projects/city-safety/index.js'),
   cctv: () => import('./components/cctv.js'),
   graphs: () => import('./components/graphs.js'),
   maps: () => import('./components/maps.js'),
@@ -28,7 +30,7 @@ async function navigate() {
     else a.removeAttribute('aria-current');
   });
   document.querySelector('#breadcrumb').textContent = names[key];
-  document.title = names[key] + ' | 도시안전ON';
+  document.title = names[key] + ' | 프론트엔드 황영균 포트폴리오';
   const root = document.querySelector('#main');
   root.innerHTML = '<p class="loading">화면을 준비합니다…</p>';
   try {

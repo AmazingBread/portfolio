@@ -1,0 +1,151 @@
+.location-map-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 7px;
+}
+.location-map {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: #edf4fc;
+}
+.location-note {
+  position: absolute;
+  z-index: 500;
+  bottom: 5px;
+  left: 5px;
+  max-width: calc(100% - 20px);
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.93);
+  color: #506589;
+  font-size: 12px;
+  pointer-events: none;
+}
+.location-map-wrap .building-map-pin {
+  background: transparent;
+  border: 0;
+}
+.location-map-wrap .building-name-label {
+  border: 1px solid #fff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 1px 4px #17335630;
+}
+.location-map-wrap .building-label-blue {
+  background: #087bff;
+}
+.location-map-wrap .building-label-pink {
+  background: #e50087;
+}
+.location-map-wrap .building-label-blue.leaflet-tooltip-top::before {
+  border-top-color: #087bff;
+}
+.location-map-wrap .building-label-pink.leaflet-tooltip-top::before {
+  border-top-color: #e50087;
+}
+
+.inline-cctv {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 7px;
+  background: #162339;
+  color: #fff;
+}
+video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  background: #08162977;
+  color: #fff;
+  cursor: pointer;
+}
+.play-overlay span {
+  font-size: 30px;
+}
+.play-overlay strong {
+  font-size: 17px;
+}
+.play-overlay small {
+  font-size: 12px;
+}
+.loading-message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.video-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 9px;
+  background: #07101e99;
+  font-size: 12px;
+  pointer-events: none;
+}
+.video-footer span:first-child {
+  flex: 1;
+}
+.video-footer button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.axis {
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+.point {
+  fill: #fff;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+.axis-label,
+.grid-label {
+  font-size: 10px; /* Adjust the font size as needed */
+}
+
+.tooltip {
+  position: absolute;
+  padding: 10px;
+  background: white;
+  border: 1px solid black;
+  pointer-events: none;
+  left: 868px;
+  top: 579px;
+}
+.grid-label {
+  font-size: 10px;
+}

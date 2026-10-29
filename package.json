@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "도시안전ON — CCTV·대용량 그래프·지도·마커 프론트엔드 포트폴리오",
+  "description": "프론트엔드 황영균 포트폴리오 — 도시안전ON HLS·Vuex·지도 / 아시아드 Vue·D3",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
     "start": "node scripts/serve.mjs",
-    "test": "node --test tests/data.test.mjs",
+    "test": "node --test tests/source.test.mjs",
     "build": "node scripts/build.mjs"
   }
 }

@@ -1,155 +1,36 @@
+import InlineCctvPlayer from '../../projects/city-safety/source/InlineCctvPlayer.js';
 import { pageHeader, story } from '../lib/ui.js';
-import { TimedPlayback } from '../lib/timed-playback.js';
 export function mount(root) {
   root.innerHTML =
     pageHeader(
-      '01',
-      'CCTV 플레이어',
-      '영상 연결부터 정지, 다시보기, 해제까지. 재사용 가능한 재생 수명 관리 데모입니다.',
-      ['HTMLVideoElement', 'Canvas captureStream', '10초 재생']
+      'PROJECT 01 / HLS',
+      'HLS 기반 실시간 CCTV',
+      '도시안전ON에서 제공되는 CCTV 한 대를 실제 프로젝트의 Vue 재생 컴포넌트로 연결합니다.',
+      ['Vue 컴포넌트', 'hls.js', 'M3U8 / MediaSource', '10초 제한']
     ) +
-    '<section class="demo-split"><article class="card"><div class="card-heading"><h2>영상 미리보기</h2><span class="pill">SYNTHETIC VIDEO</span></div><div class="video-frame"><video muted playsinline aria-label="합성 CCTV 프리뷰"></video><button class="video-overlay" hidden><b>▶</b><strong>다시보기</strong><span>10초 재생이 종료되었습니다.</span></button><span class="video-status">연결 중</span></div><div class="video-toolbar"><span>합성 영상 · 실제 CCTV 아님</span><strong id="video-countdown">10초</strong></div></article><article class="card settings"><p class="eyebrow">PLAYBACK CONTROL</p><h2>한 번에 10초만 재생</h2><p>재생이 시작된 순간 제한 시간을 계산합니다. 종료 시 마지막 프레임을 유지하고 다시보기 버튼을 표시합니다.</p><button class="btn primary" id="replay">다시 재생</button><button class="btn" id="synthetic">합성 영상으로 전환</button><label class="file-input">로컬 영상으로 테스트<input type="file" accept="video/*" id="local-video"></label><small>선택한 파일은 브라우저 안에서만 재생되며 서버에 업로드되지 않습니다.</small><div class="notice" role="status" id="video-message">합성 영상이 자동 재생됩니다.</div></article></section>' +
+    '<div id="hls-source-app"></div><section class="card implementation-flow"><h2>구현 흐름</h2><ol><li>센서 데이터의 cctv_cd로 HLS 재생 주소 구성</li><li>hls.js 지원 여부 확인 · 미지원 환경은 네이티브 HLS 확인</li><li>MANIFEST_PARSED → play() → playing 시 10초 타이머</li><li>pause() + stopLoad()로 마지막 프레임을 유지하고 추가 다운로드 중단</li><li>다시보기 시 startLoad(-1), 화면 종료 시 destroy()와 타이머 해제</li></ol><a href="https://github.com/AmazingBread/city-safety-on/blob/main/projects/city-safety/source/InlineCctvPlayer.vue" target="_blank" rel="noopener noreferrer">실제 Vue 컴포넌트 코드 보기 ↗</a></section>' +
     story(
-      '재생이 끝나도 타이머나 미디어 자원이 남으면 네트워크와 메모리가 계속 사용됩니다.',
-      '재생 제어 클래스를 분리하고, 화면 이동 시 타이머·애니메이션·스트림·파일 URL을 모두 정리합니다.',
-      '10초 정지 후 다시보기, 로컬 영상 선택, 메뉴 이동 후 재진입을 확인해 보세요.'
+      'HLS 연결과 재생 시간 제한, 정지 프레임 유지, 네트워크 로드 중단을 함께 제어해야 합니다.',
+      '원 프로젝트 InlineCctvPlayer.vue의 재생·정지·해제 메서드를 유지했습니다. 센서 응답 중 CCTV 코드와 이름만 사용하며 원본 RTSP 정보는 사용하지 않습니다.',
+      '실제 CCTV 한 대를 10초 재생합니다. 정지 후 다시보기 또는 연결 해제를 확인하세요. 영상 상태는 운영 중계 서버와 카메라 상태에 따라 달라질 수 있습니다.'
     );
-  const video = root.querySelector('video'),
-    overlay = root.querySelector('.video-overlay'),
-    status = root.querySelector('.video-status'),
-    count = root.querySelector('#video-countdown'),
-    message = root.querySelector('#video-message');
-  let alive = true,
-    frame = null,
-    stream = null,
-    url = null,
-    countdown = null,
-    started = 0,
-    phase = 0;
-  const canvas = document.createElement('canvas');
-  canvas.width = 800;
-  canvas.height = 450;
-  const ctx = canvas.getContext('2d');
-  function draw() {
-    if (!alive) return;
-    phase++;
-    ctx.fillStyle = '#142f46';
-    ctx.fillRect(0, 0, 800, 450);
-    ctx.fillStyle = '#7895a7';
-    ctx.fillRect(190, 90, 420, 270);
-    ctx.fillStyle = '#bdd2d9';
-    for (let x = 215; x < 590; x += 65)
-      for (let y = 115; y < 330; y += 58) ctx.fillRect(x, y, 35, 30);
-    ctx.fillStyle = '#c2cbd0';
-    ctx.fillRect(0, 360, 800, 90);
-    ctx.fillStyle = '#d7ede4';
-    ctx.fillRect(((phase * 2) % 1000) - 100, 385, 90, 28);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '18px monospace';
-    ctx.fillText('CITY SAFETY ON / SYNTHETIC', 22, 32);
-    ctx.fillText(new Date().toLocaleTimeString('ko-KR'), 22, 425);
-    frame = requestAnimationFrame(draw);
-  }
-  const timer = new TimedPlayback({
-    onStop: () => {
-      video.pause();
-      cancelAnimationFrame(frame);
-      overlay.hidden = false;
-      status.textContent = '일시정지';
-      count.textContent = '0초';
-      clearInterval(countdown);
+  const vm = new Vue({
+    components: { InlineCctvPlayer },
+    data: () => ({
+      connected: true,
+      camera: { cctv_cd: '00-800-0228', sensor_name: '산책로강변교_남' },
+      streamBase: 'https://safecity.busan.go.kr:30443/play/hls',
+    }),
+    methods: {
+      replay() {
+        if (!this.connected) this.connected = true;
+        else if (this.$refs.player) this.$refs.player.replay();
+      },
+      disconnect() {
+        this.connected = false;
+      },
     },
-  });
-  function resetMedia() {
-    timer.clear();
-    clearInterval(countdown);
-    cancelAnimationFrame(frame);
-    video.pause();
-    video.srcObject = null;
-    video.removeAttribute('src');
-    video.load();
-    if (stream) {
-      stream.getTracks().forEach((t) => t.stop());
-      stream = null;
-    }
-    if (url) {
-      URL.revokeObjectURL(url);
-      url = null;
-    }
-  }
-  function play() {
-    overlay.hidden = true;
-    status.textContent = '연결 중';
-    timer.clear();
-    clearInterval(countdown);
-    video.play().catch(() => {
-      if (alive) {
-        overlay.hidden = false;
-        overlay.querySelector('span').textContent = '재생 버튼을 눌러주세요.';
-      }
-    });
-  }
-  function synthetic() {
-    resetMedia();
-    message.textContent = '합성 영상 · 실제 CCTV 미연결';
-    if (!canvas.captureStream) {
-      message.textContent =
-        '이 브라우저는 합성 스트림을 지원하지 않습니다. 로컬 영상을 선택해주세요.';
-      return;
-    }
-    draw();
-    stream = canvas.captureStream(20);
-    video.srcObject = stream;
-    play();
-  }
-  function replay() {
-    if (video.srcObject) {
-      cancelAnimationFrame(frame);
-      draw();
-    } else video.currentTime = 0;
-    play();
-  }
-  video.addEventListener('playing', () => {
-    if (!alive || timer.timer !== null) return;
-    started = performance.now();
-    status.textContent = '● 재생 중';
-    count.textContent = '10초';
-    timer.start();
-    clearInterval(countdown);
-    countdown = setInterval(() => {
-      count.textContent =
-        Math.max(0, 10 - Math.floor((performance.now() - started) / 1000)) + '초';
-    }, 250);
-  });
-  video.addEventListener('ended', () => {
-    timer.clear();
-    clearInterval(countdown);
-    overlay.hidden = false;
-    status.textContent = '영상 종료';
-  });
-  video.addEventListener('error', () => {
-    if (video.getAttribute('src')) {
-      message.textContent = '이 파일을 재생할 수 없습니다. 다른 영상 파일을 선택해주세요.';
-      timer.clear();
-      clearInterval(countdown);
-    }
-  });
-  overlay.onclick = replay;
-  root.querySelector('#replay').onclick = replay;
-  root.querySelector('#synthetic').onclick = synthetic;
-  root.querySelector('#local-video').onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    resetMedia();
-    url = URL.createObjectURL(file);
-    video.src = url;
-    message.textContent = '로컬 파일: ' + file.name;
-    play();
-  };
-  synthetic();
-  return () => {
-    alive = false;
-    timer.destroy();
-    resetMedia();
-  };
+    template: `<section class="card"><div class="card-heading"><div><h2>{{camera.sensor_name}}</h2><p class="muted">도시안전ON 실시간 CCTV · 1대 · 재생 제한 10초</p></div><div class="controls"><button class="btn primary" type="button" @click="replay">{{connected?'다시보기':'실시간 CCTV 연결'}}</button><button class="btn" type="button" @click="disconnect" :disabled="!connected">연결 해제</button></div></div><div class="hls-player-stage"><inline-cctv-player v-if="connected" ref="player" :cctv-cd="camera.cctv_cd" :stream-base="streamBase" :sensor-name="camera.sensor_name" :duration="10"/><div v-else class="hls-empty"><b>CCTV 연결이 해제되었습니다.</b><p>실시간 CCTV 연결을 누르면 10초 동안 다시 재생합니다.</p></div></div><p class="inline-message">샘플 코드 {{camera.cctv_cd}} · 원본 RTSP 주소 및 카메라 인증 정보 미포함 · 브라우저에서 HLS 중계 서버에 직접 요청</p></section>`,
+  }).$mount(root.querySelector('#hls-source-app'));
+  return () => vm.$destroy();
 }

@@ -1,5 +1,11 @@
-# CCTV
+# HLS 기반 실시간 CCTV
 
-Canvas captureStream으로 합성 영상을 만들어 HTMLVideoElement에서 재생합니다. playing 이벤트 후 10초 타이머를 걸고 pause로 마지막 프레임을 유지합니다. 다시보기는 타이머를 재설정합니다. 화면 해제 시 트랙, Object URL, RAF를 정리합니다.
+원 프로젝트 InlineCctvPlayer.vue를 사용합니다. 재생·10초 정지·stopLoad·다시보기·destroy 로직을 유지합니다. 운영 서버 주소는 기본값에서 제거하고 부모 컴포넌트에서 샘플 한 개만 명시합니다.
 
-구현: [src/components/cctv.js](../src/components/cctv.js)
+- 사용자 지정 샘플: 산책로강변교_남
+- CCTV 코드: 00-800-0228
+- 동시 재생: 1대
+- 재생시간: 10초 후 정지, 다시보기 지원
+- 센서 응답의 cctv 필드(RTSP 및 인증 정보)는 사용하거나 저장하지 않습니다.
+
+영상 상태는 운영 중계 서버와 카메라 상태에 의존합니다. API 응답과 개별 HLS 요청에 GitHub Pages 출처를 허용하는 CORS 헤더가 있는지 확인했습니다.

@@ -1,5 +1,3 @@
-# 마커
+# Vuex 지도·컴포넌트 동기화
 
-800ms 목록 지연을 시뮬레이션합니다. 요청 번호로 오래된 결과를 무시하고, 필터나 건수 변경 시 레이어를 교체합니다. MarkerCluster의 chunkedLoading으로 마커를 등록합니다.
-
-구현: [src/components/markers.js](../src/components/markers.js)
+마커 클러스터 예제 대신 Vuex 공통 상태를 통해 목록·지도·상세 화면을 동기화하는 사례로 교체했습니다. 실제 SET_MAP, SET_CCTV800_LIST, SET_SHOW_CCTV800 mutation 이름을 사용하며 공개용 최소 store를 구성했습니다. 전체 운영 store를 공개한 것은 아닙니다.
