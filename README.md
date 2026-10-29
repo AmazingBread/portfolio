@@ -26,41 +26,109 @@
 
 ## 01. 부산 도시안전ON
 
-**구현 범위:** HLS 실시간 CCTV · 지도 컴포넌트 · Vuex 테이블/마커 연결
+부산 지역의 센서 정보, 지도와 CCTV를 함께 다루는 공공 안전 관제 화면입니다. Vue 컴포넌트를 나누고 지도·테이블이 같은 센서를 가리키도록 연결하는 작업과 HLS 영상 제어를 구현했습니다.
 
-**사용 기술:** Vue 2 · Vuex · Leaflet · hls.js
+**사용 기술:** Vue 2 · Vuex · JavaScript · Leaflet · Proj4Leaflet · hls.js
 
-센서 목록과 지도를 같은 상태로 연결하고 HLS의 재생·정지·자원 해제 흐름을 구현합니다.
+### 테이블과 지도 마커 연결
 
-[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#city) · [구현 코드](projects/city-safety/source/InlineCctvPlayer.vue) · [데이터 또는 추가 근거](projects/city-safety/sync-store.js)
+![도시안전ON 지도와 도로침수 테이블](assets/city-safety/map-table-operation.png)
 
-![ 부산 도시안전ON 실제 화면 ](assets/city-safety/map-table-operation.png)
+테이블에서 선택한 센서의 위치로 지도를 이동하고 해당 마커의 팝업을 여는 기능입니다. 지도 객체는 Vuex의 SET_MAP으로 공유하고, 센서 목록은 SET_FLVL_LIST로 저장합니다. 원본 FlvlList에서는 WeakMap에 센서 데이터 객체와 마커를 연결합니다.
+
+~~~text
+센서 목록 조회 → 테이블·마커 생성 → 센서 객체와 마커 연결
+테이블 행 클릭 → WeakMap에서 마커 조회 → 지도 이동
+→ 클러스터 안의 마커 표시 → 해당 센서 팝업 열기
+~~~
+
+지도와 레이어가 준비됐는지 확인한 뒤 이동하며, zoomToShowLayer 콜백에서 팝업을 엽니다. 공개 실행 예시는 선택 ID를 Vuex action·mutation으로 공유하는 구조로 별도 구성했습니다. 원본의 지도 객체·레이어 공유 방식과 설명용 예시를 구분합니다.
+
+[연동 실행 및 설명](https://amazingbread.github.io/city-safety-on/#markers) · [원본 마커 연결 코드](projects/city-safety/table-marker-source.txt) · [공개 예시 store](projects/city-safety/sync-store.js)
+
+### HLS 실시간 CCTV
+
+![도시안전ON CCTV 재생 화면](assets/city-safety/cctv-operation.png)
+
+CCTV 코드로 중계 서버의 M3U8 주소를 구성하고 hls.js를 video 요소에 연결합니다. 실제 재생이 시작되는 playing 이벤트에서 10초 타이머를 시작합니다.
+
+- 정지 시 video.pause()로 마지막 화면을 유지하고 hls.stopLoad()로 추가 로드를 중단합니다.
+- 다시보기에서는 로드를 재개합니다.
+- 컴포넌트 종료 시 타이머를 해제하고 HLS 인스턴스를 destroy합니다.
+- 원본 RTSP 주소와 카메라 인증 정보는 공개 코드에 포함하지 않습니다.
+
+[CCTV 실행 및 설명](https://amazingbread.github.io/city-safety-on/#cctv) · [Vue 재생 컴포넌트](projects/city-safety/source/InlineCctvPlayer.vue)
+
+### 재사용 위치 지도
+
+전체 관제 지도와 별도 인스턴스를 갖는 BuildingLocationMap으로 위치 카드를 분리했습니다. 부모에서 건물명·좌표를 props로 전달하고 watcher에서 기존 마커 레이어를 교체합니다. EPSG:5181 좌표계와 카카오 타일 설정을 적용하며, 좌표 검증·상시 이름표·fitBounds·ResizeObserver 크기 보정과 종료 자원 정리를 처리합니다.
+
+[지도 실행 및 설명](https://amazingbread.github.io/city-safety-on/#maps) · [위치 지도 컴포넌트](projects/city-safety/source/BuildingLocationMap.vue)
 
 ## 02. 아시아드 풍향·풍속 모니터링
 
-**구현 범위:** 풍속·돌풍속 시계열 · 극좌표 · 방향 벡터
+시간에 따른 풍속 변화와 방향을 함께 볼 수 있도록 만든 기상 모니터링 화면입니다. Vue에서 API 측정값을 차트별 props로 변환하고 D3 SVG 컴포넌트로 그립니다.
 
-**사용 기술:** Vue 2 · D3.js · SVG
+**사용 기술:** Vue 2 · JavaScript · D3.js · SVG
 
-API 측정값을 컴포넌트 props로 변환하고 시계열·방향 표현과 최대값 요약을 연결합니다.
+![아시아드 풍속·돌풍속·풍향 모니터링 실제 화면](assets/asiad/operation.png)
 
-[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#asiad) · [구현 코드](projects/asiad-wind/source/WindSpeed.vue) · [데이터 또는 추가 근거](projects/asiad-wind/data/measurement-snapshot.json)
+### 세 가지 차트 구성
 
-실제 측정 스냅샷 1,009건을 사용합니다. 전체·마지막 1일·마지막 3일로 범위를 바꿔 차트와 최대값 요약을 볼 수 있습니다.
+| 차트 | 표시 내용 | 코드 |
+|---|---|---|
+| 풍속·돌풍속 시계열 | 시간별 세기 변화와 최대값이 발생한 시점 | [WindSpeed.vue](projects/asiad-wind/source/WindSpeed.vue) |
+| 풍향 극좌표 | 방위와 풍속 분포 | [WindDirection.vue](projects/asiad-wind/source/WindDirection.vue) |
+| 시간별 풍향 벡터 | 시간축에 따른 방향과 세기의 변화 | [WindDirectionSpeed.vue](projects/asiad-wind/source/WindDirectionSpeed.vue) |
+
+풍속과 돌풍속에는 같은 시계열 컴포넌트를 사용합니다. 최대 풍속과 풍향은 같은 측정 레코드에서 가져와 서로 다른 시점의 값이 섞이지 않도록 했습니다. 공개 화면에서는 전체·마지막 1일·마지막 3일 범위에 맞춰 차트와 요약값을 다시 계산합니다.
+
+### 실제 사용 데이터
+
+측정 스냅샷 **1,009건**을 저장해 실행 화면에 사용합니다. measureDatetime은 시각, ws10m·wsGust는 풍속·돌풍속(m/s), wd10m·wdGust는 풍향·돌풍향(°)입니다. 공개 데이터는 실시간 갱신이 아닌 저장된 응답입니다.
+
+[D3 차트 실행](https://amazingbread.github.io/city-safety-on/#asiad) · [측정 JSON](projects/asiad-wind/data/measurement-snapshot.json) · [데이터 필드 설명](projects/asiad-wind/data/README.md)
 
 ## 03. 광주첨단 스마트그린산단 침수대응
 
-**구현 범위:** 침수위험 이력 지도 재생 · 수위/강우 빅데이터 검색
+침수 위험 이력을 지도에서 재생하고 수위·강우를 검색하는 의사결정지원시스템입니다. JSP·jQuery 화면에서 조회 조건과 응답을 처리하고 Leaflet 및 Highcharts에 연결했습니다.
 
-**사용 기술:** JSP · jQuery · Leaflet · Highcharts
+**사용 기술:** JavaScript · JSP · jQuery · Leaflet · Highcharts
 
-시간별 이력을 병합하고 지도 레이어를 재생합니다. 수위·강우·누적강우를 단위별 다중 축 차트로 구성합니다.
+### 침수위험 시뮬레이션
 
-[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#graphs) · [구현 코드](projects/gwangju/source/createHighChart.js) · [데이터 또는 추가 근거](projects/gwangju/simulation.txt)
+![광주첨단 침수위험 이력 재생 화면](assets/gwangju/simulation.png)
 
-![ 광주첨단 스마트그린산단 침수대응 실제 화면 ](assets/gwangju/search.png)
+기준시간·조회 간격·재생 속도를 선택해 과거 센서 이력을 시간 순서대로 재생합니다. 새로운 침수 결과를 계산하는 예측 모델이 아니라 수집된 위험도를 지도에서 확인하는 기능입니다.
 
-공개 페이지는 실제 운영 화면과 원본 코드 기반 사례 소개입니다. 운영 검색과 지도 재생을 실행하는 데모는 아닙니다.
+1. 기준시간과 조회 간격으로 시간 키를 생성합니다.
+2. 침수위·수위·하천 이력을 조회하고 같은 시간 키의 배열에 병합합니다.
+3. 슬라이더 인덱스로 해당 시점의 센서 배열을 선택합니다.
+4. 이전 원 레이어를 제거하고 alarm_state별 색상·반경으로 다시 표시합니다.
+5. 재생 타이머가 슬라이더를 이동시키며, 마지막 인덱스에서는 정지합니다.
+
+시간 표시와 지도 레이어를 같은 인덱스로 갱신합니다. 재생·수동 이동 모두 같은 데이터 갱신 흐름을 사용합니다.
+
+[이력 조회·병합 코드](projects/gwangju/history-loading.txt) · [지도 레이어 갱신 코드](projects/gwangju/simulation.txt)
+
+### Highcharts 빅데이터 검색
+
+![광주첨단 수위·강우 복합 차트와 검색 결과 표](assets/gwangju/search.png)
+
+기간·지역·데이터 종류·센서를 선택해 수위, 강우값, 1시간 누적강우와 누적강우를 그래프와 표로 확인합니다. 수위와 강우는 단위가 달라 시리즈마다 yAxis를 지정합니다.
+
+| 데이터 | 단위 | 차트 종류 | 표시 목적 |
+|---|---|---|---|
+| 수위 | m | spline | 시간에 따른 수위 변화 |
+| 강우값 | mm/10min | column | 구간별 강우량 |
+| 1시간 누적강우 | mm/1hour | areaspline | 시간 누적 변화 |
+| 누적강우 | mm | areaspline | 전체 누적 추이 |
+
+createChart는 데이터 분류와 시리즈 개수에 따라 축·최대값·눈금·시리즈를 구성합니다. 여러 단위가 한 축에 섞이지 않도록 축 번호를 연결하고, 임계선과 툴팁 단위도 각 데이터에 맞춥니다. 검색 화면의 결과 표에서는 시각별 원래 측정값을 함께 확인합니다.
+
+[Highcharts 원본 구현 코드](projects/gwangju/source/createHighChart.js) · [코드 안내](projects/gwangju/source/README.md) · [화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#graphs)
+
+광주첨단 공개 페이지는 실제 운영 화면과 코드로 구성한 사례 소개입니다. 운영 API에 연결해 검색·지도 재생을 실행하는 데모는 아닙니다.
 
 ## 04. 지능형 빗물배제 시스템
 
