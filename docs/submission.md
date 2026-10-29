@@ -2,7 +2,7 @@
 
 제목: **프론트엔드 황영균 포트폴리오**
 
-등록 URL: https://amazingbread.github.io/city-safety-on/
+등록 URL: https://amazingbread.github.io/portfolio/
 
 프로젝트별로 담당 역할 → 해결할 문제 → 실제 소스 → 변경 이유 → 실행 결과를 제시합니다.
 

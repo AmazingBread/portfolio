@@ -2,17 +2,17 @@
 
 **JavaScript 인터랙션 · Vue/Nuxt UI · 공공 관제 화면 개선 · 데이터 시각화**
 
-[포트폴리오 열기 →](https://amazingbread.github.io/city-safety-on/)
+[포트폴리오 열기 →](https://amazingbread.github.io/portfolio/)
 
 ## 프로젝트 목차
 
 | 번호 | 프로젝트 | 주요 구현 |
 |---|---|---|
-| 01 · 공공기관 | [부산 도시안전ON](https://amazingbread.github.io/city-safety-on/#city) | HLS 실시간 CCTV · 지도 컴포넌트 · Vuex 테이블/마커 연결 |
-| 02 · 공공기관 | [아시아드 풍향·풍속 모니터링](https://amazingbread.github.io/city-safety-on/#asiad) | 풍속·돌풍속 시계열 · 극좌표 · 방향 벡터 |
-| 03 · 공공기관 | [광주첨단 스마트그린산단 침수대응](https://amazingbread.github.io/city-safety-on/#graphs) | 침수위험 이력 지도 재생 · 수위/강우 빅데이터 검색 |
-| 04 | [지능형 빗물배제 시스템](https://amazingbread.github.io/city-safety-on/#lid) | 대용량 시계열 구간 탐색 · 1~40배 확대/축소 · 포인터 툴팁 |
-| 05 | [스윔바이러스 · 개인 프로젝트](https://amazingbread.github.io/city-safety-on/#swimvirus) | 수영 정보 · 강의 신청 · 데이터 관리 · Git 연동 자동 배포 |
+| 01 · 공공기관 | [부산 도시안전ON](https://amazingbread.github.io/portfolio/#city) | HLS 실시간 CCTV · 지도 컴포넌트 · Vuex 테이블/마커 연결 |
+| 02 · 공공기관 | [아시아드 풍향·풍속 모니터링](https://amazingbread.github.io/portfolio/#asiad) | 풍속·돌풍속 시계열 · 극좌표 · 방향 벡터 |
+| 03 · 공공기관 | [광주첨단 스마트그린산단 침수대응](https://amazingbread.github.io/portfolio/#graphs) | 침수위험 이력 지도 재생 · 수위/강우 빅데이터 검색 |
+| 04 | [지능형 빗물배제 시스템](https://amazingbread.github.io/portfolio/#lid) | 대용량 시계열 구간 탐색 · 1~40배 확대/축소 · 포인터 툴팁 |
+| 05 | [스윔바이러스 · 개인 프로젝트](https://amazingbread.github.io/portfolio/#swimvirus) | 수영 정보 · 강의 신청 · 데이터 관리 · Git 연동 자동 배포 |
 
 ## 구현 기술과 프로젝트
 
@@ -46,7 +46,7 @@
 
 지도와 레이어가 준비됐는지 확인한 뒤 이동하며, zoomToShowLayer 콜백에서 팝업을 엽니다. 공개 실행 예시는 선택 ID를 Vuex action·mutation으로 공유하는 구조로 별도 구성했습니다. 원본의 지도 객체·레이어 공유 방식과 설명용 예시를 구분합니다.
 
-[연동 실행 및 설명](https://amazingbread.github.io/city-safety-on/#markers) · [원본 마커 연결 코드](projects/city-safety/table-marker-source.txt) · [공개 예시 store](projects/city-safety/sync-store.js)
+[연동 실행 및 설명](https://amazingbread.github.io/portfolio/#markers) · [원본 마커 연결 코드](projects/city-safety/table-marker-source.txt) · [공개 예시 store](projects/city-safety/sync-store.js)
 
 ### HLS 실시간 CCTV
 
@@ -59,13 +59,13 @@ CCTV 코드로 중계 서버의 M3U8 주소를 구성하고 hls.js를 video 요�
 - 컴포넌트 종료 시 타이머를 해제하고 HLS 인스턴스를 destroy합니다.
 - 원본 RTSP 주소와 카메라 인증 정보는 공개 코드에 포함하지 않습니다.
 
-[CCTV 실행 및 설명](https://amazingbread.github.io/city-safety-on/#cctv) · [Vue 재생 컴포넌트](projects/city-safety/source/InlineCctvPlayer.vue)
+[CCTV 실행 및 설명](https://amazingbread.github.io/portfolio/#cctv) · [Vue 재생 컴포넌트](projects/city-safety/source/InlineCctvPlayer.vue)
 
 ### 재사용 위치 지도
 
 전체 관제 지도와 별도 인스턴스를 갖는 BuildingLocationMap으로 위치 카드를 분리했습니다. 부모에서 건물명·좌표를 props로 전달하고 watcher에서 기존 마커 레이어를 교체합니다. EPSG:5181 좌표계와 카카오 타일 설정을 적용하며, 좌표 검증·상시 이름표·fitBounds·ResizeObserver 크기 보정과 종료 자원 정리를 처리합니다.
 
-[지도 실행 및 설명](https://amazingbread.github.io/city-safety-on/#maps) · [위치 지도 컴포넌트](projects/city-safety/source/BuildingLocationMap.vue)
+[지도 실행 및 설명](https://amazingbread.github.io/portfolio/#maps) · [위치 지도 컴포넌트](projects/city-safety/source/BuildingLocationMap.vue)
 
 ## 02. 아시아드 풍향·풍속 모니터링
 
@@ -91,7 +91,7 @@ CCTV 코드로 중계 서버의 M3U8 주소를 구성하고 hls.js를 video 요�
 
 측정 스냅샷 **1,009건**을 저장해 실행 화면에 사용합니다. measureDatetime은 시각, ws10m·wsGust는 풍속·돌풍속(m/s), wd10m·wdGust는 풍향·돌풍향(°)입니다. 공개 데이터는 실시간 갱신이 아닌 저장된 응답입니다.
 
-[D3 차트 실행](https://amazingbread.github.io/city-safety-on/#asiad) · [측정 JSON](projects/asiad-wind/data/measurement-snapshot.json) · [데이터 필드 설명](projects/asiad-wind/data/README.md)
+[D3 차트 실행](https://amazingbread.github.io/portfolio/#asiad) · [측정 JSON](projects/asiad-wind/data/measurement-snapshot.json) · [데이터 필드 설명](projects/asiad-wind/data/README.md)
 
 ## 03. 광주첨단 스마트그린산단 침수대응
 
@@ -143,7 +143,7 @@ JSP·jQuery 화면에서 시뮬레이션의 핵심 인터랙션은 브라우저 
 
 createChart는 데이터 분류와 시리즈 개수에 따라 축·최대값·눈금·시리즈를 구성합니다. 여러 단위가 한 축에 섞이지 않도록 축 번호를 연결하고, 임계선과 툴팁 단위도 각 데이터에 맞춥니다. 검색 화면의 결과 표에서는 시각별 원래 측정값을 함께 확인합니다.
 
-[Highcharts 원본 구현 코드](projects/gwangju/source/createHighChart.js) · [코드 안내](projects/gwangju/source/README.md) · [화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#graphs)
+[Highcharts 원본 구현 코드](projects/gwangju/source/createHighChart.js) · [코드 안내](projects/gwangju/source/README.md) · [화면 및 상세 설명](https://amazingbread.github.io/portfolio/#graphs)
 
 광주첨단 공개 페이지는 실제 운영 화면과 코드로 구성한 사례 소개입니다. 운영 API에 연결해 검색·지도 재생을 실행하는 데모는 아닙니다.
 
@@ -155,7 +155,7 @@ createChart는 데이터 분류와 시리즈 개수에 따라 축·최대값·�
 
 zoom 변환으로 시간축과 유량·강우 시리즈를 함께 갱신하고 눈금 밀도를 조절합니다. 실제 4,999건을 실행 화면에 연결했습니다.
 
-[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#lid) · [구현 코드](projects/lid/source/ZoomAIComponents.vue) · [데이터 또는 추가 근거](projects/lid/data/measurement-snapshot.json)
+[화면 및 상세 설명](https://amazingbread.github.io/portfolio/#lid) · [구현 코드](projects/lid/source/ZoomAIComponents.vue) · [데이터 또는 추가 근거](projects/lid/data/measurement-snapshot.json)
 
 ![ 지능형 빗물배제 시스템 실제 화면 ](assets/lid/operation.png)
 
@@ -177,7 +177,7 @@ app/pages의 강의·신청·관리 화면과 server/api를 연결했습니다. 
 
 사용자 화면과 서버 API, 강의 신청 데이터 처리를 연결하고 Vercel master 브랜치 자동 배포를 구성했습니다.
 
-[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#swimvirus) · [구현 코드](https://github.com/AmazingBread/swimvirus)
+[화면 및 상세 설명](https://amazingbread.github.io/portfolio/#swimvirus) · [구현 코드](https://github.com/AmazingBread/swimvirus)
 
 ![ 스윔바이러스 · 개인 프로젝트 실제 화면 ](assets/swimvirus/vercel-deployment.png)
 
