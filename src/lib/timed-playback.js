@@ -1,5 +1,10 @@
 export class TimedPlayback {
-  constructor({ duration = 10000, onStop, setTimer = setTimeout, clearTimer = clearTimeout }) {
+  constructor({
+    duration = 10000,
+    onStop,
+    setTimer = (callback, delay) => setTimeout(callback, delay),
+    clearTimer = (id) => clearTimeout(id),
+  }) {
     this.duration = duration;
     this.onStop = onStop;
     this.setTimer = setTimer;
