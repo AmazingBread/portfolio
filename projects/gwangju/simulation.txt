@@ -1,0 +1,36 @@
+Original: WEB-INF/views/index_risk.jsp
+Lines: 440–471
+Read-only excerpt; not an executable standalone module.
+
+                function drawNewCircle(index) {
+                    updateTooltipPosition (index);
+                    playCircles.forEach (function (newCircle) {
+                        map.removeLayer (newCircle)
+                    });
+                    playCircles = []
+
+                    Object.keys (timeObjects).map (Number).sort ((a, b) => a - b);
+                    const timeObjectsKey = Object.keys (timeObjects)[index]; // key에 해당하는 배열을 가져옴
+                    const timeObjectsKeyArray = timeObjects[timeObjectsKey]; // 첫 번째 키에 해당하는 배열을 가져옴
+                    // 연, 월, 일, 시, 분을 추출
+                    const year = timeObjectsKey.substr (0, 4);
+                    const month = timeObjectsKey.substr (4, 2);
+                    const day = timeObjectsKey.substr (6, 2);
+                    const hour = timeObjectsKey.substr (8, 2);
+                    const minute = timeObjectsKey.substr (10, 2);
+// 날짜와 시간 객체 생성
+                    const dateTime = year + '년 ' + month + '월 ' + day + '일 ' + hour + ':' + minute;
+                    sliderValue.textContent = dateTime; // 시뮬레이션 날자 포인트
+                    timeObjectsKeyArray.forEach ((item, index) => {
+                        const alarmState = item.alarm_state === null ? 4 : item.alarm_state;
+                        let newCircle = L.circle ([item.lat, item.lon], {
+                            color      : levels[alarmState].color,
+                            fillColor  : levels[alarmState].fillColor,
+                            weight     : 1,
+                            opacity    : 0.3,
+                            fillOpacity: 0.3,
+                            radius     : levels[alarmState].radius
+                        }).addTo (map);
+                        playCircles.push (newCircle);
+                    });
+                }

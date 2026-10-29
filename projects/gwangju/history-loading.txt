@@ -1,0 +1,39 @@
+Original: WEB-INF/views/index_risk.jsp
+Lines: 560–594
+Read-only excerpt; not an executable standalone module.
+
+                        from_dt      : selectedDateTime,
+                        to_dt        : lastObjectTime,
+                        time_interval: intervalSelect
+                    }
+                    // console.log('params', params);
+                    // console.log('timeObjects', timeObjects);
+
+                    // flvl 버블 데이터 로딩 및 병합
+                    getFlvlHistoryList (params).done (function (data) {
+                        // console.log('getFlvlHistoryList', data);
+                        mergeDataIntoTimeObjects (data);
+
+                        // wlvl 버블 데이터 로딩 및 병합
+                        getWlvlHistoryList (params).done (function (data) {
+                            // console.log('getWlvlHistoryList', data);
+                            mergeDataIntoTimeObjects (data);
+
+                            // river 버블 데이터 로딩 및 병합
+                            getRiverHistoryList (params).done (function (data) {
+                                // console.log('getRiverHistoryList', data);
+                                mergeDataIntoTimeObjects (data);
+                                loadingPop.style.display = "none";
+                                range.disabled = false;
+
+                                // 로딩 스피너 숨김
+                                // document.getElementById('loading-spinner').classList.add('hidden');
+
+                                // 날자 에러 있으면 빠져나간다
+                                if (dateError) {
+                                    return
+                                }
+                                if (!isPlaying) {
+                                    bubblePlaying ()
+                                }
+                            });

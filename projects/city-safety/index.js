@@ -12,7 +12,6 @@ export function mount(root) {
       ['cctv', '01', 'HLS 기반 실시간 CCTV', 'M3U8 재생, stopLoad, destroy, 다시보기'],
       ['maps', '02', '지도 컴포넌트', '실제 좌표계·타일 설정과 원본 Vue SFC'],
       ['markers', '03', 'Vuex 상태 동기화', '메뉴·목록·지도·상세 화면의 같은 선택 상태'],
-      ['graphs', '04', '대용량 그래프', '원본 코드 수령 후 실제 구현으로 교체 예정'],
     ]
       .map(
         ([route, no, title, detail]) =>

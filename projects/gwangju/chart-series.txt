@@ -1,0 +1,60 @@
+Original: resources/js/createHighChart.js
+Lines: 750–805
+Read-only excerpt; not an executable standalone module.
+
+                        valueSuffix: ' mm'
+                    },
+                    borderWidth: 0,
+                }
+            ];
+        } else {
+            tempSeries = [
+                {
+                    name       : '수위(m)',
+                    type       : 'spline',
+                    color      : '#3cdddc', // 강우 값 실측 값 chart color 변경 시
+                    data       : seriesHis[0],
+                    yAxis      : 0,
+                    tooltip    : {
+                        valueSuffix: ' m'
+                    },
+                    borderWidth: 0,
+                },
+                {
+                    name: '강우값(mm/10min)',
+                    type: 'column',
+//			    	opacity: 0.7,
+                    fillOpacity: 0.1,
+                    color      : '#454FFF', // 강우 값 실측 값 chart color 변경 시
+                    data       : seriesHis[1],
+                    yAxis      : 1,
+                    tooltip    : {
+                        valueSuffix: '(mm/10min)'
+                    },
+                    borderWidth: 0,
+                },
+                {
+                    name       : '1시간누적강우(mm/1hour)',
+                    type       : 'areaspline',
+                    color      : '#37e545', // 강우 값 실측 값 chart color 변경 시
+                    data       : seriesHis[2],
+                    yAxis      : 2,
+                    tooltip    : {
+                        valueSuffix: ' (mm/1hour)'
+                    },
+                    borderWidth: 0,
+                },
+                {
+                    name       : '누적강우(mm)',
+                    type       : 'areaspline',
+                    color      : 'skyblue', // 강우 값 실측 값 chart color 변경 시
+                    data       : seriesHis[3],
+                    yAxis      : 3,
+                    opacity    : 0.5,
+                    tooltip    : {
+                        valueSuffix: ' mm'
+                    },
+                    borderWidth: 0,
+                }
+            ];
+        }
