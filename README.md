@@ -8,9 +8,9 @@
 
 | 번호 | 프로젝트 | 주요 구현 |
 |---|---|---|
-| 01 | [부산 도시안전ON](https://amazingbread.github.io/city-safety-on/#city) | HLS 실시간 CCTV · 지도 컴포넌트 · Vuex 테이블/마커 연결 |
-| 02 | [아시아드 풍향·풍속 모니터링](https://amazingbread.github.io/city-safety-on/#asiad) | 풍속·돌풍속 시계열 · 극좌표 · 방향 벡터 |
-| 03 | [광주첨단 스마트그린산단 침수대응](https://amazingbread.github.io/city-safety-on/#graphs) | 침수위험 이력 지도 재생 · 수위/강우 빅데이터 검색 |
+| 01 · 공공기관 | [부산 도시안전ON](https://amazingbread.github.io/city-safety-on/#city) | HLS 실시간 CCTV · 지도 컴포넌트 · Vuex 테이블/마커 연결 |
+| 02 · 공공기관 | [아시아드 풍향·풍속 모니터링](https://amazingbread.github.io/city-safety-on/#asiad) | 풍속·돌풍속 시계열 · 극좌표 · 방향 벡터 |
+| 03 · 공공기관 | [광주첨단 스마트그린산단 침수대응](https://amazingbread.github.io/city-safety-on/#graphs) | 침수위험 이력 지도 재생 · 수위/강우 빅데이터 검색 |
 | 04 | [지능형 빗물배제 시스템](https://amazingbread.github.io/city-safety-on/#lid) | 대용량 시계열 구간 탐색 · 1~40배 확대/축소 · 포인터 툴팁 |
 | 05 | [스윔바이러스 · 개인 프로젝트](https://amazingbread.github.io/city-safety-on/#swimvirus) | 수영 정보 · 강의 신청 · 데이터 관리 · Git 연동 자동 배포 |
 
@@ -25,6 +25,8 @@
 | Git·운영 배포 | 코드 저장소와 Vercel Git 연동 자동 배포 |
 
 ## 01. 부산 도시안전ON
+
+**공공기관 프로젝트 · 안전 관제 UI**
 
 부산 지역의 센서 정보, 지도와 CCTV를 함께 다루는 공공 안전 관제 화면입니다. Vue 컴포넌트를 나누고 지도·테이블이 같은 센서를 가리키도록 연결하는 작업과 HLS 영상 제어를 구현했습니다.
 
@@ -67,6 +69,8 @@ CCTV 코드로 중계 서버의 M3U8 주소를 구성하고 hls.js를 video 요�
 
 ## 02. 아시아드 풍향·풍속 모니터링
 
+**공공기관 프로젝트 · 기상 관제 UI**
+
 시간에 따른 풍속 변화와 방향을 함께 볼 수 있도록 만든 기상 모니터링 화면입니다. Vue에서 API 측정값을 차트별 props로 변환하고 D3 SVG 컴포넌트로 그립니다.
 
 **사용 기술:** Vue 2 · JavaScript · D3.js · SVG
@@ -90,6 +94,8 @@ CCTV 코드로 중계 서버의 M3U8 주소를 구성하고 hls.js를 video 요�
 [D3 차트 실행](https://amazingbread.github.io/city-safety-on/#asiad) · [측정 JSON](projects/asiad-wind/data/measurement-snapshot.json) · [데이터 필드 설명](projects/asiad-wind/data/README.md)
 
 ## 03. 광주첨단 스마트그린산단 침수대응
+
+**공공기관 프로젝트 · 침수대응 관제 UI**
 
 침수 위험 이력을 지도에서 재생하고 수위·강우를 검색하는 의사결정지원시스템입니다. JSP·jQuery 화면에서 조회 조건과 응답을 처리하고 Leaflet 및 Highcharts에 연결했습니다.
 
@@ -156,6 +162,8 @@ zoom 변환으로 시간축과 유량·강우 시리즈를 함께 갱신하고 �
 실제 spot3 측정 스냅샷 4,999건으로 휠 확대·축소, 드래그 이동, 초기화를 제공합니다. 해당 응답의 강우 배열은 비어 있어 원본 규칙대로 0을 표시합니다.
 
 ## 05. 스윔바이러스 · 개인 프로젝트
+
+> **Nuxt 4 · Vue 3 · Tailwind CSS v4로 화면을 개발했습니다.** 레이아웃·카드·입력 폼·상태별 스타일에 유틸리티 클래스를 적용했습니다.
 
 **구현 범위:** 수영 정보 · 강의 신청 · 데이터 관리 · Git 연동 자동 배포
 
