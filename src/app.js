@@ -1,4 +1,5 @@
 const names = {
+  lid: '지능형 빗물배제 · D3 확대·축소',
   swimvirus: '스윔바이러스 · 개인 프로젝트',
   overview: '소개 · 프로젝트',
   city: '부산 도시안전ON',
@@ -9,6 +10,7 @@ const names = {
   asiad: '아시아드 풍향·풍속',
 };
 const loaders = {
+  lid: () => import('../projects/lid/index.js'),
   swimvirus: () => import('../projects/swimvirus/index.js'),
   overview: () => import('./components/overview.js'),
   city: () => import('../projects/city-safety/index.js'),

@@ -142,3 +142,25 @@ GitHub master → Vercel Git 연동 자동 배포 → Production Ready 흐름입
 Supabase의 강의·신청·신청 항목과 수영 정보 테이블을 사용합니다. 아래 이미지는 사용자가 제공한 관리 화면이며 공개 게시물 데이터를 표시합니다.
 
 ![Supabase 테이블 구성](assets/swimvirus/supabase-tables.png)
+
+
+## 05. 지능형 빗물배제 시스템 · D3 인터랙션
+
+![실제 빗물배제 운영 화면](assets/lid/operation.png)
+
+유량·예측유량·강우·누적강우를 복합 시계열로 표시합니다. d3.zoom 1~40배, rescaleX 시간축 갱신, 눈금 수 제한, zoomIdentity 초기화를 구현했습니다.
+
+[구현 사례](https://amazingbread.github.io/city-safety-on/#lid) · [복합 차트 원본 코드](projects/lid/source/ZoomAIComponents.vue) · [선 그래프 원본 코드](projects/lid/source/ZoomlineComponents.vue)
+
+### 프론트엔드 UI 직무별 확인 근거
+
+| 직무 역량 | 프로젝트 근거 |
+|---|---|
+| JavaScript 이벤트·인터랙션 | 빗물배제 D3 zoom, HLS 재생 수명 관리 |
+| Vue SPA·컴포넌트 | 도시안전ON 지도·테이블 Vuex, 아시아드 D3 |
+| Nuxt·유틸리티 CSS | 스윔바이러스 Nuxt 4·Tailwind v4 구성 |
+| JSP·jQuery 유지보수 | 광주첨단 검색·Highcharts·지도 시뮬레이션 |
+| Git·배포 | 공개 소스 저장소, 스윔바이러스 Vercel Git 연동 |
+| AI 개발 도구 활용 | 코드 분리·공개용 어댑터·검증·문서 작성 과정에 Codex 활용 |
+
+접근성 인증·KWACG 전면 준수, GSAP·Three.js 실무, 파견 가능 여부, 자격증 등 확인되지 않은 이력은 기재하지 않습니다.
