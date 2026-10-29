@@ -95,6 +95,17 @@ CCTV 코드로 중계 서버의 M3U8 주소를 구성하고 hls.js를 video 요�
 
 **사용 기술:** JavaScript · JSP · jQuery · Leaflet · Highcharts
 
+### 바닐라 JavaScript DOM 조작과 이벤트 처리
+
+JSP·jQuery 화면에서 시뮬레이션의 핵심 인터랙션은 브라우저 기본 API로 직접 처리했습니다.
+
+- document.getElementById로 요소를 찾고 value·max·disabled·textContent를 갱신
+- addEventListener(input)으로 슬라이더 이동에 따른 지도 레이어 변경
+- mousedown의 stopPropagation으로 지도 드래그와 이벤트 충돌 제어
+- setInterval → 값 변경 → new Event(input) → dispatchEvent로 자동 재생과 수동 조작을 같은 핸들러에 연결
+
+[DOM·이벤트 코드 발췌](projects/gwangju/dom-events.js)
+
 ### 침수위험 시뮬레이션
 
 ![광주첨단 침수위험 이력 재생 화면](assets/gwangju/simulation.png)
@@ -148,7 +159,13 @@ zoom 변환으로 시간축과 유량·강우 시리즈를 함께 갱신하고 �
 
 **구현 범위:** 수영 정보 · 강의 신청 · 데이터 관리 · Git 연동 자동 배포
 
-**사용 기술:** Nuxt 4 · Vue 3 · Tailwind · Supabase · Vercel
+**사용 기술:** Nuxt 4.4 계열 · Vue 3.5 계열 · Tailwind CSS v4 · Supabase · Vercel
+
+### Nuxt 4·Tailwind 개발
+
+app/pages의 강의·신청·관리 화면과 server/api를 연결했습니다. Tailwind의 flex·간격·테두리·카드 유틸리티를 화면에 적용하고 상태별 클래스를 바인딩합니다. 공통 CSS의 @theme으로 글꼴을 관리하며, 모바일 강의 폼에는 최소 입력 글자 크기 16px을 적용했습니다.
+
+[Nuxt·Tailwind 원본 저장소](https://github.com/AmazingBread/swimvirus)
 
 사용자 화면과 서버 API, 강의 신청 데이터 처리를 연결하고 Vercel master 브랜치 자동 배포를 구성했습니다.
 
