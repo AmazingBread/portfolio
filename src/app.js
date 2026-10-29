@@ -4,6 +4,7 @@ const names = {
   graphs: '대용량 그래프',
   maps: '지도 인터랙션',
   markers: '마커 & 클러스터',
+  asiad: '아시아드 풍향·풍속',
 };
 const loaders = {
   overview: () => import('./components/overview.js'),
@@ -11,6 +12,7 @@ const loaders = {
   graphs: () => import('./components/graphs.js'),
   maps: () => import('./components/maps.js'),
   markers: () => import('./components/markers.js'),
+  asiad: () => import('../projects/asiad-wind/index.js'),
 };
 let cleanup = () => {},
   revision = 0;

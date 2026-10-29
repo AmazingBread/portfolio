@@ -57,3 +57,21 @@ test('Playback stops after 10 seconds and replay cancels previous timer', () => 
   playback.destroy();
   assert.equal(clears, 2);
 });
+
+import { makeWindData, windVector, maxWind } from '../projects/asiad-wind/data.js';
+test('Wind vector uses north as zero degrees and east as 90 degrees', () => {
+  assert(Math.abs(windVector(1, 0).x) < 1e-10);
+  assert.equal(windVector(1, 0).y, -1);
+  assert.equal(windVector(1, 90).x, 1);
+  assert(Math.abs(windVector(1, 90).y) < 1e-10);
+});
+test('Wind dataset is ordered, reproducible and maximum keeps matching timestamp', () => {
+  const data = makeWindData(7);
+  assert.equal(data.length, 1008);
+  assert(data.every((row, i) => i === 0 || row.date > data[i - 1].date));
+  assert.deepEqual(data, makeWindData(7));
+  const peak = maxWind(data, 'gust');
+  assert.equal(peak.gust, Math.max(...data.map((d) => d.gust)));
+  assert(data.includes(peak));
+  assert.equal(maxWind([], 'speed'), null);
+});

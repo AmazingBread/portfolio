@@ -17,6 +17,12 @@
 | 지도 | [지도](https://amazingbread.github.io/city-safety-on/#maps) | 독립 Leaflet 인스턴스, ResizeObserver, 대상 전환, 상시 이름표 |
 | 마커 | [클러스터](https://amazingbread.github.io/city-safety-on/#markers) | 2,000개 가상 위치, 클러스터, 지연 응답, 필터·레이어 교체 |
 
+## 추가 프로젝트: 아시아드 풍향·풍속 / D3
+
+[아시아드 D3 데모](https://amazingbread.github.io/city-safety-on/#asiad) · [구현 설명](docs/asiad-d3.md)
+
+풍속·돌풍속 시계열, 풍향 극좌표와 시간축 벡터, 최대값 표시, 기간 조회 및 갱신 시뮬레이션을 별도 projects/asiad-wind/ 폴더에 구성했습니다. 원본 Vue + D3 7 프로젝트는 읽기만 했고, 공개 데모는 가상 데이터로 재구성했습니다.
+
 ## 담당 범위와 기술 구분
 
 - 원 프로젝트 작업: Vue 기반 관제·관리자 화면, CCTV 재생 컴포넌트, 지도·마커 표시, SCSS 레이아웃, 임계값 입력 UI 및 비동기 초기화 문제 개선.

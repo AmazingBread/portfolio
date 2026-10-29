@@ -954,3 +954,132 @@ select {
     transition: none !important;
   }
 }
+
+.asiad-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px;
+  margin: 20px 0 32px;
+  border: 1px solid #d3e6df;
+  background: #eff8f4;
+  border-radius: 9px;
+}
+.asiad-intro h2 {
+  font-size: 23px;
+}
+.asiad-intro p:not(.eyebrow) {
+  font-size: 12px;
+  color: #6f8d80;
+  margin: 0;
+}
+.wind-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.wind-controls h2 {
+  font-size: 19px;
+  margin: 0;
+}
+.wind-controls .muted {
+  margin: 8px 0 0;
+}
+.wind-card {
+  margin-bottom: 16px;
+  padding: 20px;
+}
+.wind-chart-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.wind-svg-wrap {
+  flex: 1;
+  min-width: 0;
+}
+.wind-svg-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.wind-svg-wrap text {
+  font: 10px Arial, sans-serif;
+  fill: #657e93;
+}
+.wind-svg-wrap .domain {
+  stroke: #c7d5e1;
+}
+.wind-max {
+  flex: 0 0 145px;
+}
+.wind-max span {
+  display: block;
+  color: #819caf;
+  font-size: 10px;
+  margin: 9px 0 4px;
+}
+.wind-max strong {
+  display: block;
+  color: #ec8d1a;
+  font-size: 20px;
+  font-weight: 600;
+}
+.wind-max small {
+  font-size: 12px;
+  font-weight: 400;
+}
+.wind-tooltip {
+  position: fixed;
+  z-index: 2000;
+  pointer-events: none;
+  background: #163955;
+  color: white;
+  border-radius: 5px;
+  font-size: 11px;
+  padding: 8px 11px;
+}
+@media (max-width: 1000px) {
+  .wind-chart-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .wind-max {
+    flex: auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .wind-max strong {
+    font-size: 17px;
+  }
+  .wind-controls {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 650px) {
+  .asiad-intro {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .wind-card {
+    padding: 14px;
+  }
+  .wind-max span {
+    margin: 0;
+  }
+  .wind-max strong {
+    font-size: 15px;
+  }
+  .wind-svg-wrap {
+    overflow-x: auto;
+  }
+  .wind-svg-wrap svg {
+    min-width: 560px;
+  }
+}

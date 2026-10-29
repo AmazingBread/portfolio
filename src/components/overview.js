@@ -50,6 +50,7 @@ export function mount(root) {
       .join('') +
     '</div></section>' +
     '<section class="case-study"><p class="eyebrow">ENGINEERING NOTES</p><h2>동작하는 화면 뒤의 문제 해결</h2><div class="case-list"><article><span>01 / 비동기 초기화</span><h3>첫 진입에서 보이지 않던 CCTV 마커</h3><p>지도 생성과 목록 응답의 시점 차이로 빈 레이어가 남는 구조를 확인했습니다. 데이터 준비 시점에 레이어를 다시 구성하고 중복 생성을 방지하는 흐름으로 개선했습니다.</p></article><article><span>02 / 컴포넌트 수명</span><h3>페이지를 떠난 뒤에도 남는 재생 자원</h3><p>재생 제한과 다시보기 동작을 분리하고, 화면 종료 시 타이머·미디어 자원을 정리합니다. 이 공개 데모는 운영 HLS 대신 합성 영상과 로컬 파일로 같은 흐름을 재현합니다.</p></article><article><span>03 / 데이터 시각화</span><h3>전체 데이터와 화면에 그리는 데이터 분리</h3><p>공개 데모에서는 원본 데이터를 Worker로 처리하고 픽셀 폭에 맞는 Min/Max 표본을 Canvas로 그립니다. 축소 전후의 건수와 처리 시간을 실제 실행 결과로 표시합니다.</p></article></div></section>' +
+    '<section class="asiad-intro"><div><p class="eyebrow">SECOND PROJECT / D3.JS</p><h2>아시아드 풍향·풍속 모니터링</h2><p>풍속·돌풍속 시계열, 풍향 극좌표 분포와 시간축 벡터를 D3로 시각화했습니다.</p></div><a class="btn primary" href="#asiad">D3 프로젝트 보기 →</a></section>' +
     '<section class="submission"><div><p class="eyebrow">ABOUT THIS PORTFOLIO</p><h2>기능을 실행하고, 구현을 확인하세요.</h2><p>운영 시스템의 복제본이 아닌, 핵심 개발 경험을 설명하기 위해 새로 만든 독립 예제입니다.<br>AI 도구는 코드 초안과 검증 보조에 활용했으며, 실제 기여 범위와 한계는 README에 구분했습니다.</p></div><a class="btn" href="https://github.com/AmazingBread/city-safety-on#readme" target="_blank" rel="noopener noreferrer">README 보기 ↗</a></section>';
   return () => {};
 }
