@@ -48,8 +48,11 @@ test('Published original D3 and map SFCs match their recorded original hashes', 
   for (const entry of entries.filter((entry) => !entry.file.includes('InlineCctvPlayer'))) {
     const bytes = fs.readFileSync(new URL('../' + entry.file, import.meta.url));
     assert.equal(
-      crypto.createHash('sha256').update(bytes).digest('hex'),
-      entry.originalSha256,
+      crypto
+        .createHash('sha256')
+        .update(bytes.toString('utf8').replace(/\r\n/g, '\n'))
+        .digest('hex'),
+      entry.originalLfSha256,
       entry.file
     );
   }

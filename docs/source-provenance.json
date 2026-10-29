@@ -3,30 +3,35 @@
     "file": "projects/city-safety/source/BuildingLocationMap.vue",
     "originalFile": "vue/src/components/Admin/BuildingLocationMap.vue",
     "originalSha256": "34d2b7ddbe0090ef3f93d0c416207ad318083669b63d96344216909688460cca",
-    "changes": "원본 SFC 유지. 데모 좌표는 부모에서 별도로 전달."
+    "changes": "원본 SFC 유지. 데모 좌표는 부모에서 별도로 전달.",
+    "originalLfSha256": "34d2b7ddbe0090ef3f93d0c416207ad318083669b63d96344216909688460cca"
   },
   {
     "file": "projects/city-safety/source/InlineCctvPlayer.vue",
     "originalFile": "vue/src/components/Cctv/InlineCctvPlayer.vue",
     "originalSha256": "ebd321ff15233600a1de632ac59180000600dbd4e2a6be701478e06f35f1f0e6",
-    "changes": "운영 스트림 주소 기본값 제거. 공개 테스트 URL prop과 watcher만 추가. HLS 재생·정지·해제 로직 유지."
+    "changes": "운영 스트림 주소 기본값 제거. 공개 테스트 URL prop과 watcher만 추가. HLS 재생·정지·해제 로직 유지.",
+    "originalLfSha256": "ebd321ff15233600a1de632ac59180000600dbd4e2a6be701478e06f35f1f0e6"
   },
   {
     "file": "projects/asiad-wind/source/WindSpeed.vue",
     "originalFile": "vue/src/components/WindSpeed.vue",
     "originalSha256": "e8e2aee93eb1359845e4d5e0944e0f1acb49922cd019fd62baa175ef1276b5af",
-    "changes": "원본 SFC 그대로 보관. 실행 어댑터에서 import만 전역 D3로 연결하고 시간 라벨을 KST로 통일."
+    "changes": "원본 SFC 그대로 보관. 실행 어댑터에서 import만 전역 D3로 연결하고 시간 라벨을 KST로 통일.",
+    "originalLfSha256": "eafe00b18d9a82e5e183bf549a609d00d6bd25f057b771ba559c9ac72156f662"
   },
   {
     "file": "projects/asiad-wind/source/WindDirection.vue",
     "originalFile": "vue/src/components/WindDirection.vue",
     "originalSha256": "d22918427f5c77aa39aabb704e8bc92f6c99c3d71bcd6c12296dd76488a0bb83",
-    "changes": "원본 SFC 그대로 보관. 실행 어댑터에서 import만 전역 D3로 연결하고 시간 라벨을 KST로 통일."
+    "changes": "원본 SFC 그대로 보관. 실행 어댑터에서 import만 전역 D3로 연결하고 시간 라벨을 KST로 통일.",
+    "originalLfSha256": "95a44b97fda3feb274bc355be27abb4979d5cae38c9cd1322ea55d61ff545b3b"
   },
   {
     "file": "projects/asiad-wind/source/WindDirectionSpeed.vue",
     "originalFile": "vue/src/components/WindDirectionSpeed.vue",
     "originalSha256": "f91c5fd5feee8ba763ef612c30176f4f5ff1c1b31029d404873a30188d057b2b",
-    "changes": "원본 SFC 그대로 보관. 실행 어댑터에서 import만 전역 D3로 연결하고 시간 라벨을 KST로 통일."
+    "changes": "원본 SFC 그대로 보관. 실행 어댑터에서 import만 전역 D3로 연결하고 시간 라벨을 KST로 통일.",
+    "originalLfSha256": "e80b7edaf3088139a21088cde638784aba969813c60105c58e3e44dd643c44a4"
   }
 ]
