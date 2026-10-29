@@ -124,7 +124,7 @@ MapView에서 SET_MAP으로 공유한 지도와 센서 목록을 기반으로 �
 운영 화면의 091_안락 CCTV 영상과 재생 종료 카운트다운입니다. [CCTV 기능 설명 및 실행 샘플](https://amazingbread.github.io/city-safety-on/#cctv)에서 원본 Vue 컴포넌트와 HLS 재생·정지·자원 해제 흐름을 확인할 수 있습니다. 실행 샘플 카메라는 산책로강변교_남이며 이미지와 구분합니다.
 
 
-## 04. 스윔바이러스 · 개인 프로젝트
+## 05. 스윔바이러스 · 개인 프로젝트
 
 Nuxt 4 · Vue 3 · Supabase 기반 수영 정보 및 강의 신청 프로젝트입니다. 강의 신청·관리 API, 데이터베이스 마이그레이션과 테스트를 구현했습니다. Vercel 자동 배포와 Supabase 테이블 구성을 실제 관리 화면으로 소개합니다.
 
@@ -144,7 +144,7 @@ Supabase의 강의·신청·신청 항목과 수영 정보 테이블을 사용�
 ![Supabase 테이블 구성](assets/swimvirus/supabase-tables.png)
 
 
-## 05. 지능형 빗물배제 시스템 · D3 인터랙션
+## 04. 지능형 빗물배제 시스템 · D3 인터랙션
 
 ![실제 빗물배제 운영 화면](assets/lid/operation.png)
 
@@ -164,3 +164,6 @@ Supabase의 강의·신청·신청 항목과 수영 정보 테이블을 사용�
 | AI 개발 도구 활용 | 코드 분리·공개용 어댑터·검증·문서 작성 과정에 Codex 활용 |
 
 접근성 인증·KWACG 전면 준수, GSAP·Three.js 실무, 파견 가능 여부, 자격증 등 확인되지 않은 이력은 기재하지 않습니다.
+
+
+빗물배제 실행 예시는 실제 spot3 측정 스냅샷 4999건을 원본 D3 컴포넌트에 연결합니다. [측정 JSON](projects/lid/data/measurement-snapshot.json). 원본 Parking.vue의 분 단위 강우 연결·누적값 유지 변환을 사용하며 예측유량은 원본처럼 배열 인덱스로 연결합니다.
