@@ -1480,3 +1480,7 @@ select {
     flex-wrap: wrap;
   }
 }
+
+/* Public adapter: preserve the complete polar SVG viewport. */
+.original-polar{overflow:visible}.original-polar svg{display:block;width:100%;height:auto;aspect-ratio:2/1}.original-summary{min-width:0;overflow-wrap:anywhere}.original-summary strong{white-space:normal}.original-vector svg{max-width:100%}
+.flood-demo{position:relative;isolation:isolate;min-height:580px;background:#edf3f8;border-radius:14px;overflow:hidden}.flood-demo .sync-map{height:580px;min-height:580px}.flood-demo .sync-list{position:absolute;z-index:500;right:18px;bottom:22px;width:430px;max-width:calc(100% - 36px);background:white;padding:18px;border-radius:12px;box-shadow:0 5px 25px #142e4c33}.flood-demo .sync-list h3{font-size:20px;margin:0 0 12px}.flood-demo table{font-size:13px}.flood-demo th,.flood-demo td{padding:8px;border:1px solid #dce3ec;text-align:center}.flood-demo .sync-list button{border:0;background:transparent;padding:2px;margin:0;width:auto}.flood-demo .sync-list button span{display:none}.flood-demo .sync-detail{display:none}.flood-badge{background:#00a845;color:white;padding:4px 9px;border-radius:5px}.flood-pin{background:#199cdd;border:2px solid white;color:white;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 5px #1236}.flood-demo-note{padding:12px 0;font-size:13px}@media(max-width:700px){.flood-demo .sync-list{position:relative;right:auto;bottom:auto;width:100%;max-width:100%;border-radius:0}.flood-demo .sync-map{height:380px;min-height:380px}}

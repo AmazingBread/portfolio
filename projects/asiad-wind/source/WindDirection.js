@@ -38,7 +38,8 @@ const component = {
 
       const svg = d3
         .select(this.$refs.windDirection)
-        .attr('width', width)
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .attr('width', '100%')
         .attr('height', height)
         .append('g')
         .attr(

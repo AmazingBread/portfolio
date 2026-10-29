@@ -24,7 +24,7 @@
     "file": "projects/asiad-wind/source/WindDirection.vue",
     "originalFile": "vue/src/components/WindDirection.vue",
     "originalSha256": "d22918427f5c77aa39aabb704e8bc92f6c99c3d71bcd6c12296dd76488a0bb83",
-    "changes": "원본 SFC 그대로 보관. 실행 어댑터에서 import만 전역 D3로 연결하고 시간 라벨을 KST로 통일.",
+    "changes": "원본 SFC 그대로 보관. 실행 어댑터에서 import만 전역 D3로 연결하고 시간 라벨을 KST로 통일. 실행 JS 어댑터에 viewBox를 추가하여 축소 시 방위 잘림을 방지. 원본 SFC 유지.",
     "originalLfSha256": "95a44b97fda3feb274bc355be27abb4979d5cae38c9cd1322ea55d61ff545b3b"
   },
   {
