@@ -126,6 +126,19 @@ MapView에서 SET_MAP으로 공유한 지도와 센서 목록을 기반으로 �
 
 ## 04. 스윔바이러스 · 개인 프로젝트
 
-Nuxt 4 · Vue 3 · Supabase 기반 수영 정보 및 강의 신청 프로젝트입니다. 강의 신청·관리 API, 데이터베이스 마이그레이션과 테스트를 구현했습니다. 배포 URL·실제 화면·CI/CD 구성은 확인 후 상세 근거를 추가합니다.
+Nuxt 4 · Vue 3 · Supabase 기반 수영 정보 및 강의 신청 프로젝트입니다. 강의 신청·관리 API, 데이터베이스 마이그레이션과 테스트를 구현했습니다. Vercel 자동 배포와 Supabase 테이블 구성을 실제 관리 화면으로 소개합니다.
 
 [프로젝트 소개](https://amazingbread.github.io/city-safety-on/#swimvirus)
+
+
+### 스윔바이러스 운영 구성
+
+[서비스 열기](https://www.swimvirus.com) · [원본 저장소](https://github.com/AmazingBread/swimvirus)
+
+GitHub master → Vercel Git 연동 자동 배포 → Production Ready 흐름입니다. 별도 GitHub Actions CI 검사는 아직 확인하지 않았습니다.
+
+![Vercel 운영 배포](assets/swimvirus/vercel-deployment.png)
+
+Supabase의 강의·신청·신청 항목과 수영 정보 테이블을 사용합니다. 아래 이미지는 사용자가 제공한 관리 화면이며 공개 게시물 데이터를 표시합니다.
+
+![Supabase 테이블 구성](assets/swimvirus/supabase-tables.png)
