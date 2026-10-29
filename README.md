@@ -115,3 +115,10 @@ Codex를 코드 분리, 실행 어댑터, 테스트 보조와 문서 정리에 �
 MapView에서 SET_MAP으로 공유한 지도와 센서 목록을 기반으로 테이블·마커를 구성합니다. 원본 FlvlList는 WeakMap에 센서 객체와 마커를 연결하며, 테이블 클릭 시 대상 마커를 찾아 지도 이동 → 클러스터 표시 → 팝업 열기를 수행합니다. 선택 ID를 action/mutation으로 공유하는 공개 예시와 원본의 직접 마커 제어 방식을 구분하여 설명합니다.
 
 [상세 설명 및 실행 예시](https://amazingbread.github.io/city-safety-on/#markers) · [원본 코드 발췌](projects/city-safety/table-marker-source.txt)
+
+
+### HLS CCTV 실제 구동 화면
+
+![도시안전ON CCTV 실제 구동 화면](assets/city-safety/cctv-operation.png)
+
+운영 화면의 091_안락 CCTV 영상과 재생 종료 카운트다운입니다. [CCTV 기능 설명 및 실행 샘플](https://amazingbread.github.io/city-safety-on/#cctv)에서 원본 Vue 컴포넌트와 HLS 재생·정지·자원 해제 흐름을 확인할 수 있습니다. 실행 샘플 카메라는 산책로강변교_남이며 이미지와 구분합니다.

@@ -8,6 +8,7 @@ export function mount(root) {
       '도시안전ON에서 제공되는 CCTV 한 대를 실제 프로젝트의 Vue 재생 컴포넌트로 연결합니다.',
       ['Vue 컴포넌트', 'hls.js', 'M3U8 / MediaSource', '10초 제한']
     ) +
+    "<section class=\"card\"><p class=\"eyebrow\">ACTUAL PROJECT / HLS CCTV</p><h2>실제 CCTV 구동 화면</h2><figure style=\"margin:18px 0\"><a href=\"assets/city-safety/cctv-operation.png\" target=\"_blank\" rel=\"noopener\"><img src=\"assets/city-safety/cctv-operation.png\" alt=\"도시안전ON 실제 CCTV 재생 화면: 091_안락 영상과 종료 카운트다운, 다시보기 및 일시정지 버튼\" style=\"width:100%;height:auto;border-radius:12px\"></a><figcaption>사용자가 제공한 운영 화면 캡처입니다. 지도에서 CCTV를 선택해 별도 창으로 영상을 확인하며, 남은 재생 시간과 재생 제어 버튼을 표시합니다. 클릭하면 원본 크기로 볼 수 있습니다.</figcaption></figure><p>이미지는 091_안락 CCTV의 구동 예시입니다. 아래 실시간 실행 샘플은 산책로강변교_남 카메라로 연결되며, 캡처 이미지는 재생 영상이 아닙니다.</p></section>" +
     '<div id="hls-source-app"></div><section class="card implementation-flow"><h2>구현 흐름</h2><ol><li>센서 데이터의 cctv_cd로 HLS 재생 주소 구성</li><li>hls.js 지원 여부 확인 · 미지원 환경은 네이티브 HLS 확인</li><li>MANIFEST_PARSED → play() → playing 시 10초 타이머</li><li>pause() + stopLoad()로 마지막 프레임을 유지하고 추가 다운로드 중단</li><li>다시보기 시 startLoad(-1), 화면 종료 시 destroy()와 타이머 해제</li></ol><a href="https://github.com/AmazingBread/city-safety-on/blob/main/projects/city-safety/source/InlineCctvPlayer.vue" target="_blank" rel="noopener noreferrer">실제 Vue 컴포넌트 코드 보기 ↗</a></section>' +
     story(
       'HLS 연결과 재생 시간 제한, 정지 프레임 유지, 네트워크 로드 중단을 함께 제어해야 합니다.',
