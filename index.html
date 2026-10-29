@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#102d50" />
+    <meta
+      name="description"
+      content="도시안전ON 개발 경험을 바탕으로 CCTV, 대용량 그래프, 지도, 마커 기능을 독립적으로 재구성한 프론트엔드 포트폴리오."
+    />
+    <title>도시안전ON | 프론트엔드 포트폴리오</title>
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./vendor/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="./vendor/cluster/MarkerCluster.css" />
+    <link rel="stylesheet" href="./vendor/cluster/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">본문 바로가기</a>
+    <aside class="sidebar">
+      <a class="brand" href="#overview"
+        ><span class="brand-symbol">▥</span
+        ><span>도시안전<span class="on">ON</span><small>FRONTEND PORTFOLIO</small></span></a
+      >
+      <p class="nav-caption">PROJECT EXPLORER</p>
+      <nav aria-label="포트폴리오 메뉴">
+        <a href="#overview" data-page="overview"><span>00</span> 프로젝트 소개</a
+        ><a href="#cctv" data-page="cctv"><span>01</span> CCTV 플레이어</a
+        ><a href="#graphs" data-page="graphs"><span>02</span> 대용량 그래프</a
+        ><a href="#maps" data-page="maps"><span>03</span> 지도 인터랙션</a
+        ><a href="#markers" data-page="markers"><span>04</span> 마커 & 클러스터</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <span class="live-dot"></span> 가상 데이터 기반 데모
+        <p>운영 서비스와 분리된<br />독립 포트폴리오입니다.</p>
+        <a
+          href="https://github.com/AmazingBread/city-safety-on"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub 코드 보기 ↗</a
+        >
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <span><b>도시안전ON</b> / <span id="breadcrumb">프로젝트 소개</span></span
+        ><span class="demo-badge">INTERACTIVE DEMO</span>
+      </header>
+      <main id="main" tabindex="-1"></main>
+      <footer>
+        도시안전ON · AmazingBread <span>가상 데이터 · 실시간 운영 API 미연결</span>
+      </footer>
+    </div>
+    <script src="./vendor/leaflet/leaflet.js"></script>
+    <script src="./vendor/cluster/leaflet.markercluster.js"></script>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
