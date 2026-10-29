@@ -1504,3 +1504,5 @@ select {
 
 .project-features .feature-card .feature-number{float:none;display:block;font-size:30px;font-weight:600;letter-spacing:-1px;color:#7394b7;margin:0 0 26px}.project-features .feature-card h3{display:block;font-size:18px;margin:0 0 12px}.project-features .feature-card{padding:26px}.project-features .feature-card p{line-height:1.8}
 
+
+.portfolio-scope{display:flex;justify-content:space-between;align-items:center;gap:24px;background:#fff;border:1px solid #dbe6ef;border-radius:12px;padding:24px;margin:24px 0}.portfolio-scope h2{font-size:19px;line-height:1.6;margin:8px 0}.portfolio-scope p{font-size:13px;line-height:1.8;color:#687e94;margin:0}.portfolio-scope-links{display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0}.portfolio-scope-links a{font-size:12px;font-weight:600;padding:9px 12px;border:1px solid #dce6f1;border-radius:7px;text-decoration:none}@media(max-width:900px){.portfolio-scope{align-items:start;flex-direction:column}}

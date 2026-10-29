@@ -8,6 +8,7 @@ export function mount(root) {
       '공공 안전 관제 화면에서 CCTV, 공간 정보, 센서 목록의 상태를 함께 다루는 프론트엔드 개발 사례입니다.',
       ['Vue 2', 'Vuex', 'Leaflet / EPSG:5181', 'HLS']
     ) +
+    "<section class=\"portfolio-scope\"><div><span class=\"eyebrow\">IMPLEMENTATION SCOPE</span><h2>Vuex 연결 · 지도 컴포넌트 · HLS 재생</h2><p>실제 화면에서 기능을 확인하고, 데이터 흐름과 원본 코드로 구현을 살펴볼 수 있습니다.</p></div><div class=\"portfolio-scope-links\"><a href=\"#markers\">테이블·마커 동작 보기 →</a><a href=\"https://github.com/AmazingBread/city-safety-on/tree/main/projects/city-safety/source/\" target=\"_blank\" rel=\"noopener\">원본 코드 ↗</a></div></section>" +
     '<section class="case-study-panel"><div><p class="eyebrow">MY CONTRIBUTION</p><h2>화면을 나누고, 상태는 연결하기</h2><p>실제 소스에서 확인할 수 있는 담당 기능을 기술 주제별로 정리했습니다. 아래 실행 예시와 공개용 원본 컴포넌트를 함께 확인할 수 있습니다.</p></div><div class="contribution-list"><span>HLS CCTV 재생과 제한 시간·자원 관리</span><span>공통 지도 컴포넌트와 좌표계 설정</span><span>Vuex를 통한 지도·목록·상세 정보 동기화</span><span>첫 진입 시 데이터 응답과 지도 생성 순서 개선</span></div></section><div class="feature-grid project-features">' +
     [
       ['cctv', '01', 'HLS 기반 실시간 CCTV', 'M3U8 재생, stopLoad, destroy, 다시보기'],
