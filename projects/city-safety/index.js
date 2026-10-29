@@ -1,3 +1,4 @@
+import {icon} from '../../src/lib/icons.js';
 import { pageHeader } from '../../src/lib/ui.js';
 export function mount(root) {
   root.innerHTML =
@@ -17,7 +18,7 @@ export function mount(root) {
         ([route, no, title, detail]) =>
           '<a class="feature-card" href="#' +
           route +
-          '"><span class="feature-number">' +
+          '">' + icon(route) + '<span class="feature-number">' +
           no +
           '</span><h3>' +
           title +

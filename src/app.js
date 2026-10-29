@@ -1,3 +1,4 @@
+import {decorateHeadings} from './lib/icons.js';
 const names = {
   lid: '지능형 빗물배제 · D3 확대·축소',
   swimvirus: '스윔바이러스 · 개인 프로젝트',
@@ -41,6 +42,7 @@ async function navigate() {
     const page = await loaders[key]();
     if (id !== revision) return;
     cleanup = page.mount(root) || (() => {});
+    decorateHeadings(root);
     window.scrollTo(0, 0);
   } catch (error) {
     root.textContent = '데모를 불러오지 못했습니다. 로컬에서는 npm start로 실행해주세요.';
