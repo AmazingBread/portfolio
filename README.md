@@ -1,169 +1,118 @@
 # 프론트엔드 황영균 포트폴리오
 
-**실시간 영상 · 지도 상태 동기화 · 시계열 데이터 시각화**
+**JavaScript 인터랙션 · Vue/Nuxt UI · 공공 관제 화면 개선 · 데이터 시각화**
 
-공공 안전 관제와 기상 모니터링에서 구현한 프론트엔드 기능을 소개합니다. 프로젝트별 실행 화면과 원본 코드를 함께 확인할 수 있습니다.
+[포트폴리오 열기 →](https://amazingbread.github.io/city-safety-on/)
 
-### [포트폴리오 열기 →](https://amazingbread.github.io/city-safety-on/)
+## 프로젝트 목차
 
-[부산 도시안전ON](#01-부산-도시안전on) · [아시아드](#02-아시아드-풍향풍속-모니터링) · [광주첨단](#03-광주첨단-스마트그린산단-침수대응) · [로컬 실행](#로컬-실행)
+| 번호 | 프로젝트 | 주요 구현 |
+|---|---|---|
+| 01 | [부산 도시안전ON](https://amazingbread.github.io/city-safety-on/#city) | HLS 실시간 CCTV · 지도 컴포넌트 · Vuex 테이블/마커 연결 |
+| 02 | [아시아드 풍향·풍속 모니터링](https://amazingbread.github.io/city-safety-on/#asiad) | 풍속·돌풍속 시계열 · 극좌표 · 방향 벡터 |
+| 03 | [광주첨단 스마트그린산단 침수대응](https://amazingbread.github.io/city-safety-on/#graphs) | 침수위험 이력 지도 재생 · 수위/강우 빅데이터 검색 |
+| 04 | [지능형 빗물배제 시스템](https://amazingbread.github.io/city-safety-on/#lid) | 대용량 시계열 구간 탐색 · 1~40배 확대/축소 · 포인터 툴팁 |
+| 05 | [스윔바이러스 · 개인 프로젝트](https://amazingbread.github.io/city-safety-on/#swimvirus) | 수영 정보 · 강의 신청 · 데이터 관리 · Git 연동 자동 배포 |
 
-## 프로젝트 한눈에 보기
+## 프론트엔드 UI 직무와 연결되는 경험
 
-| 프로젝트 | 구현 내용 | 주요 기술 | 화면 |
-| :--- | :--- | :--- | :--- |
-| 부산 도시안전ON | HLS CCTV, GIS 지도, 지도·목록·상세 상태 동기화 | Vue 2 · Vuex 3 · Leaflet · hls.js | [보기](https://amazingbread.github.io/city-safety-on/#city) |
-| 아시아드 풍향·풍속 | 풍속·돌풍속 시계열, 풍향 극좌표·벡터 | Vue 2 · D3.js 7 · SVG | [보기](https://amazingbread.github.io/city-safety-on/#asiad) |
-| 광주첨단 침수대응 | 위험도 이력 지도 재생, 수위·강우 복합 차트 검색 | JavaScript · JSP · jQuery · Leaflet · Highcharts | [보기](https://amazingbread.github.io/city-safety-on/#graphs) |
+| 역량 | 구현 근거 |
+|---|---|
+| JavaScript 이벤트·인터랙션 | D3 확대·축소, 포인터 툴팁, HLS 재생 제어 |
+| Vue SPA·컴포넌트 | Vuex 테이블·지도 연결, 차트 props 설계 |
+| Nuxt·유틸리티 CSS | 스윔바이러스 Nuxt 4 / Tailwind 구성 |
+| JSP·jQuery 운영 UI | 광주첨단 검색·Highcharts·이력 재생 |
+| Git·운영 배포 | 코드 저장소와 Vercel Git 연동 자동 배포 |
 
 ## 01. 부산 도시안전ON
 
-센서·지도·실시간 영상을 함께 확인하는 공공 안전 관제 UI입니다.
+**구현 범위:** HLS 실시간 CCTV · 지도 컴포넌트 · Vuex 테이블/마커 연결
 
-| 기능 | 기술적으로 보여주는 내용 | 실행 / 코드 |
-| :--- | :--- | :--- |
-| HLS 실시간 CCTV | 10초 재생 제한, pause·stopLoad 분리, 종료 시 타이머와 인스턴스 해제 | [실행](https://amazingbread.github.io/city-safety-on/#cctv) / [원본 컴포넌트](projects/city-safety/source/InlineCctvPlayer.vue) |
-| GIS 지도 컴포넌트 | EPSG:5181 좌표계, 지도 초기화, 마커 갱신, 컨테이너 크기 대응 | [실행](https://amazingbread.github.io/city-safety-on/#maps) / [원본 컴포넌트](projects/city-safety/source/BuildingLocationMap.vue) |
-| Vuex 상태 동기화 | 공통 상태를 통해 목록 선택·지도 마커·상세 패널 연결 | [실행](https://amazingbread.github.io/city-safety-on/#markers) / [공개용 최소 store](projects/city-safety/sync-store.js) |
+**사용 기술:** Vue 2 · Vuex · Leaflet · hls.js
 
-**확인할 흐름:** 목록 선택 → Vuex 상태 변경 → 지도와 상세 패널 갱신.
+센서 목록과 지도를 같은 상태로 연결하고 HLS의 재생·정지·자원 해제 흐름을 구현합니다.
 
-공개 버전은 사용자 지정 CCTV 한 대를 연결합니다. 지도 좌표와 동기화 목록은 예시 데이터이며, 전체 운영 store 대신 핵심 흐름을 재현한 최소 구현을 제공합니다.
+[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#city) · [구현 코드](projects/city-safety/source/InlineCctvPlayer.vue) · [데이터 또는 추가 근거](projects/city-safety/sync-store.js)
+
+![ 부산 도시안전ON 실제 화면 ](assets/city-safety/map-table-operation.png)
 
 ## 02. 아시아드 풍향·풍속 모니터링
 
-풍속과 돌풍속의 변화, 최대값이 발생한 시점, 해당 시점의 풍향을 함께 표현합니다.
+**구현 범위:** 풍속·돌풍속 시계열 · 극좌표 · 방향 벡터
 
-- **시계열:** 시간축에 따른 풍속·돌풍속과 최대값 표시
-- **방향:** 풍향 극좌표와 시간별 방향 벡터 표현
-- **데이터:** 실제 API 측정 스냅샷 1,009건 사용
-- **실행 방식:** 원본 Vue/D3 컴포넌트에 공개용 실행 어댑터와 KST 표시 적용
+**사용 기술:** Vue 2 · D3.js · SVG
 
-[차트 실행 →](https://amazingbread.github.io/city-safety-on/#asiad) · [원본 컴포넌트](projects/asiad-wind/source/) · [측정 스냅샷](projects/asiad-wind/data/measurement-snapshot.json)
+API 측정값을 컴포넌트 props로 변환하고 시계열·방향 표현과 최대값 요약을 연결합니다.
 
-저장된 측정값을 재현하며 실시간으로 갱신되는 화면은 아닙니다.
+[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#asiad) · [구현 코드](projects/asiad-wind/source/WindSpeed.vue) · [데이터 또는 추가 근거](projects/asiad-wind/data/measurement-snapshot.json)
+
+실제 측정 스냅샷 1,009건을 사용합니다. 전체·마지막 1일·마지막 3일로 범위를 바꿔 차트와 최대값 요약을 확인할 수 있습니다.
 
 ## 03. 광주첨단 스마트그린산단 침수대응
 
-침수대응 의사결정지원시스템의 **침수위험 시뮬레이션**과 **빅데이터 검색** 개발 사례입니다.
+**구현 범위:** 침수위험 이력 지도 재생 · 수위/강우 빅데이터 검색
 
-### 침수위험 시뮬레이션
+**사용 기술:** JSP · jQuery · Leaflet · Highcharts
 
-![침수위험 시뮬레이션 실제 화면](assets/gwangju/simulation.png)
+시간별 이력을 병합하고 지도 레이어를 재생합니다. 수위·강우·누적강우를 단위별 다중 축 차트로 구성합니다.
 
-기준시간과 조회 간격을 설정하고, 시간 슬라이더에 따라 센서별 위험도 레이어를 지도에 표시합니다.
+[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#graphs) · [구현 코드](projects/gwangju/source/createHighChart.js) · [데이터 또는 추가 근거](projects/gwangju/simulation.txt)
 
-1. 조회 조건으로 시간 키 생성
-2. 침수위·수위·하천 이력 데이터를 시간별로 병합
-3. 재생 또는 슬라이더 이동 시 이전 레이어 제거
-4. 해당 시점의 위험도에 따른 색상·반경으로 Leaflet 원 갱신
+![ 광주첨단 스마트그린산단 침수대응 실제 화면 ](assets/gwangju/search.png)
 
-[이력 조회 코드](projects/gwangju/history-loading.txt) · [지도 갱신 코드](projects/gwangju/simulation.txt)
+공개 페이지는 실제 운영 화면과 원본 코드 기반 사례 소개입니다. 운영 검색과 지도 재생을 실행하는 데모는 아닙니다.
 
-### 빅데이터 검색 · Highcharts
+## 04. 지능형 빗물배제 시스템
 
-![수위와 강우 빅데이터 검색 실제 화면](assets/gwangju/search.png)
+**구현 범위:** 대용량 시계열 구간 탐색 · 1~40배 확대/축소 · 포인터 툴팁
 
-기간·지역·센서를 선택하여 **수위, 강우값, 1시간 누적강우, 누적강우**를 그래프와 표로 확인합니다. 서로 다른 단위의 시리즈를 다중 Y축에 연결하고, 선·막대·영역 차트를 조합합니다.
+**사용 기술:** Vue 2 · D3.js · SVG
 
-[구현 사례 보기 →](https://amazingbread.github.io/city-safety-on/#graphs) · [Highcharts 구현 코드](projects/gwangju/source/createHighChart.js)
+zoom 변환으로 시간축과 유량·강우 시리즈를 함께 갱신하고 눈금 밀도를 조절합니다. 실제 4,999건을 실행 화면에 연결했습니다.
 
-현재 공개 페이지는 실제 화면과 원본 코드 발췌로 구성된 사례 소개입니다. 운영 API 연결 및 대용량 성능 벤치마크를 재현한 실행 데모는 아닙니다.
+[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#lid) · [구현 코드](projects/lid/source/ZoomAIComponents.vue) · [데이터 또는 추가 근거](projects/lid/data/measurement-snapshot.json)
 
-## 코드 안내
+![ 지능형 빗물배제 시스템 실제 화면 ](assets/lid/operation.png)
 
-~~~text
-├── src/                       포트폴리오 화면 · 라우팅 · 스타일
-├── projects/
-│   ├── city-safety/            도시안전ON 컴포넌트 · Vuex 예시
-│   ├── asiad-wind/             D3 컴포넌트 · 실제 측정 스냅샷
-│   └── gwangju/                침수대응 사례 · 원본 코드 발췌
-├── assets/gwangju/             실제 운영 화면 캡처
-├── docs/source-provenance.json 원본 해시 · 공개용 변경 범위
-├── tests/                     상태 동기화 · 데이터 · HLS 수명 검증
-└── scripts/                   로컬 서버 · 정적 빌드
-~~~
-
-## 로컬 실행
-
-Node.js 18 이상에서 실행합니다. 프론트엔드 라이브러리는 라이선스와 함께 `vendor/`에 포함되어 있습니다.
-
-~~~sh
-npm start
-~~~
-
-브라우저에서 [http://127.0.0.1:4173/](http://127.0.0.1:4173/)를 엽니다.
-
-~~~sh
-npm test       # 상태 동기화, 측정 데이터, 원본 출처, HLS 자원 해제 검증
-npm run build # dist/에 정적 배포 파일 생성
-~~~
-
-## 공개 범위와 개발 도구
-
-프로젝트별 프론트엔드 구현 범위를 소개하며, 원 프로젝트 전체를 단독 개발했다는 의미는 아닙니다. 운영 프로젝트는 별도 보관하고 이 저장소에서 공개용 화면을 구성합니다.
-
-원본 전체 소스·인증 정보·RTSP 주소는 포함하지 않습니다. 원본 컴포넌트, 실행 어댑터, 예시 데이터와 실제 측정 스냅샷을 구분합니다. [원본 해시 및 변경 범위](docs/source-provenance.json)에서 추출된 컴포넌트의 출처를 확인할 수 있습니다.
-
-Codex를 코드 분리, 실행 어댑터, 테스트 보조와 문서 정리에 활용했습니다. 확인되지 않은 처리량이나 성능 개선 수치는 기재하지 않습니다.
-
-
-### 테이블과 지도 마커 연결 상세
-
-![도시안전ON 실제 운영 화면](assets/city-safety/map-table-operation.png)
-
-MapView에서 SET_MAP으로 공유한 지도와 센서 목록을 기반으로 테이블·마커를 구성합니다. 원본 FlvlList는 WeakMap에 센서 객체와 마커를 연결하며, 테이블 클릭 시 대상 마커를 찾아 지도 이동 → 클러스터 표시 → 팝업 열기를 수행합니다. 선택 ID를 action/mutation으로 공유하는 공개 예시와 원본의 직접 마커 제어 방식을 구분하여 설명합니다.
-
-[상세 설명 및 실행 예시](https://amazingbread.github.io/city-safety-on/#markers) · [원본 코드 발췌](projects/city-safety/table-marker-source.txt)
-
-
-### HLS CCTV 실제 구동 화면
-
-![도시안전ON CCTV 실제 구동 화면](assets/city-safety/cctv-operation.png)
-
-운영 화면의 091_안락 CCTV 영상과 재생 종료 카운트다운입니다. [CCTV 기능 설명 및 실행 샘플](https://amazingbread.github.io/city-safety-on/#cctv)에서 원본 Vue 컴포넌트와 HLS 재생·정지·자원 해제 흐름을 확인할 수 있습니다. 실행 샘플 카메라는 산책로강변교_남이며 이미지와 구분합니다.
-
+실제 spot3 측정 스냅샷 4,999건으로 휠 확대·축소, 드래그 이동, 초기화를 제공합니다. 해당 응답의 강우 배열은 비어 있어 원본 규칙대로 0을 표시합니다.
 
 ## 05. 스윔바이러스 · 개인 프로젝트
 
-Nuxt 4 · Vue 3 · Supabase 기반 수영 정보 및 강의 신청 프로젝트입니다. 강의 신청·관리 API, 데이터베이스 마이그레이션과 테스트를 구현했습니다. Vercel 자동 배포와 Supabase 테이블 구성을 실제 관리 화면으로 소개합니다.
+**구현 범위:** 수영 정보 · 강의 신청 · 데이터 관리 · Git 연동 자동 배포
 
-[프로젝트 소개](https://amazingbread.github.io/city-safety-on/#swimvirus)
+**사용 기술:** Nuxt 4 · Vue 3 · Tailwind · Supabase · Vercel
 
+사용자 화면과 서버 API, 강의 신청 데이터 처리를 연결하고 Vercel master 브랜치 자동 배포를 구성했습니다.
 
-### 스윔바이러스 운영 구성
+[화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#swimvirus) · [구현 코드](https://github.com/AmazingBread/swimvirus)
 
-[서비스 열기](https://www.swimvirus.com) · [원본 저장소](https://github.com/AmazingBread/swimvirus)
+![ 스윔바이러스 · 개인 프로젝트 실제 화면 ](assets/swimvirus/vercel-deployment.png)
 
-GitHub master → Vercel Git 연동 자동 배포 → Production Ready 흐름입니다. 별도 GitHub Actions CI 검사는 아직 확인하지 않았습니다.
+[서비스 열기](https://www.swimvirus.com) · GitHub master → Vercel 자동 배포 → Production Ready. 별도 CI 검사 단계는 아직 확인하지 않았습니다.
 
-![Vercel 운영 배포](assets/swimvirus/vercel-deployment.png)
+## 코드와 데이터 안내
 
-Supabase의 강의·신청·신청 항목과 수영 정보 테이블을 사용합니다. 아래 이미지는 사용자가 제공한 관리 화면이며 공개 게시물 데이터를 표시합니다.
+- `projects/city-safety`: CCTV·지도 원본 SFC와 Vuex 공개 예시
+- `projects/asiad-wind`: 원본 D3 컴포넌트와 측정 JSON
+- `projects/gwangju`: Highcharts 원본 구현과 지도 재생 코드 발췌
+- `projects/lid`: 원본 D3 zoom 컴포넌트와 실제 측정 JSON
+- `projects/swimvirus`: 개인 프로젝트 설명과 운영 구성 근거
+- [원본 해시 및 변경 범위](docs/source-provenance.json)
 
-![Supabase 테이블 구성](assets/swimvirus/supabase-tables.png)
+## 개발자용 로컬 실행
 
+포트폴리오는 위 공개 URL에서 바로 볼 수 있습니다. 아래는 소스 코드를 내려받아 실행할 때 사용하는 방법입니다. Node.js 18 이상이 필요합니다.
 
-## 04. 지능형 빗물배제 시스템 · D3 인터랙션
+~~~sh
+npm start
+npm test
+npm run build
+~~~
 
-![실제 빗물배제 운영 화면](assets/lid/operation.png)
+로컬 서버 기본 주소: http://127.0.0.1:4173/
 
-유량·예측유량·강우·누적강우를 복합 시계열로 표시합니다. d3.zoom 1~40배, rescaleX 시간축 갱신, 눈금 수 제한, zoomIdentity 초기화를 구현했습니다.
+## 담당 범위와 AI 도구 활용
 
-[구현 사례](https://amazingbread.github.io/city-safety-on/#lid) · [복합 차트 원본 코드](projects/lid/source/ZoomAIComponents.vue) · [선 그래프 원본 코드](projects/lid/source/ZoomlineComponents.vue)
+프로젝트별 프론트엔드 구현을 소개하며 전체 시스템을 단독 개발했다는 의미는 아닙니다. 원본 운영 프로젝트를 수정하지 않고 별도 공개용 저장소에서 구성했습니다. 인증 정보·RTSP 주소는 포함하지 않으며 예시 데이터와 실제 측정 스냅샷을 구분합니다.
 
-### 프론트엔드 UI 직무별 확인 근거
-
-| 직무 역량 | 프로젝트 근거 |
-|---|---|
-| JavaScript 이벤트·인터랙션 | 빗물배제 D3 zoom, HLS 재생 수명 관리 |
-| Vue SPA·컴포넌트 | 도시안전ON 지도·테이블 Vuex, 아시아드 D3 |
-| Nuxt·유틸리티 CSS | 스윔바이러스 Nuxt 4·Tailwind v4 구성 |
-| JSP·jQuery 유지보수 | 광주첨단 검색·Highcharts·지도 시뮬레이션 |
-| Git·배포 | 공개 소스 저장소, 스윔바이러스 Vercel Git 연동 |
-| AI 개발 도구 활용 | 코드 분리·공개용 어댑터·검증·문서 작성 과정에 Codex 활용 |
-
-접근성 인증·KWACG 전면 준수, GSAP·Three.js 실무, 파견 가능 여부, 자격증 등 확인되지 않은 이력은 기재하지 않습니다.
-
-
-빗물배제 실행 예시는 실제 spot3 측정 스냅샷 4999건을 원본 D3 컴포넌트에 연결합니다. [측정 JSON](projects/lid/data/measurement-snapshot.json). 원본 Parking.vue의 분 단위 강우 연결·누적값 유지 변환을 사용하며 예측유량은 원본처럼 배열 인덱스로 연결합니다.
+Codex를 코드 분리, 공개용 실행 어댑터, 검증 보조와 문서 정리에 활용했습니다. 측정하지 않은 성능 수치나 확인되지 않은 접근성 인증·기술 경력은 기재하지 않습니다.
