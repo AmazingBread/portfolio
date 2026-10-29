@@ -1,6 +1,6 @@
 export function pageHeader(number, title, description, tags) {
   return (
-    '<div class="page-heading"><p class="eyebrow">FEATURE LAB / ' +
+    '<div class="page-heading"><p class="eyebrow">' +
     number +
     '</p><h1>' +
     title +

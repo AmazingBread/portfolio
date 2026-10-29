@@ -46,7 +46,7 @@ API 측정값을 컴포넌트 props로 변환하고 시계열·방향 표현과 
 
 [화면 및 상세 설명](https://amazingbread.github.io/city-safety-on/#asiad) · [구현 코드](projects/asiad-wind/source/WindSpeed.vue) · [데이터 또는 추가 근거](projects/asiad-wind/data/measurement-snapshot.json)
 
-실제 측정 스냅샷 1,009건을 사용합니다. 전체·마지막 1일·마지막 3일로 범위를 바꿔 차트와 최대값 요약을 확인할 수 있습니다.
+실제 측정 스냅샷 1,009건을 사용합니다. 전체·마지막 1일·마지막 3일로 범위를 바꿔 차트와 최대값 요약을 볼 수 있습니다.
 
 ## 03. 광주첨단 스마트그린산단 침수대응
 
