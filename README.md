@@ -60,13 +60,13 @@
 
 [이력 조회 코드](projects/gwangju/history-loading.txt) · [지도 갱신 코드](projects/gwangju/simulation.txt)
 
-### 빅데이터 검색
+### 빅데이터 검색 · Highcharts
 
 ![수위와 강우 빅데이터 검색 실제 화면](assets/gwangju/search.png)
 
 기간·지역·센서를 선택하여 **수위, 강우값, 1시간 누적강우, 누적강우**를 그래프와 표로 확인합니다. 서로 다른 단위의 시리즈를 다중 Y축에 연결하고, 선·막대·영역 차트를 조합합니다.
 
-[구현 사례 보기 →](https://amazingbread.github.io/city-safety-on/#graphs) · [원본 시리즈 설정](projects/gwangju/chart-series.txt)
+[구현 사례 보기 →](https://amazingbread.github.io/city-safety-on/#graphs) · [Highcharts 구현 코드](projects/gwangju/source/createHighChart.js)
 
 현재 공개 페이지는 실제 화면과 원본 코드 발췌로 구성된 사례 소개입니다. 운영 API 연결 및 대용량 성능 벤치마크를 재현한 실행 데모는 아닙니다.
 
