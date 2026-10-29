@@ -106,3 +106,12 @@ npm run build # dist/에 정적 배포 파일 생성
 원본 전체 소스·인증 정보·RTSP 주소는 포함하지 않습니다. 원본 컴포넌트, 실행 어댑터, 예시 데이터와 실제 측정 스냅샷을 구분합니다. [원본 해시 및 변경 범위](docs/source-provenance.json)에서 추출된 컴포넌트의 출처를 확인할 수 있습니다.
 
 Codex를 코드 분리, 실행 어댑터, 테스트 보조와 문서 정리에 활용했습니다. 확인되지 않은 처리량이나 성능 개선 수치는 기재하지 않습니다.
+
+
+### 테이블과 지도 마커 연결 상세
+
+![도시안전ON 실제 운영 화면](assets/city-safety/map-table-operation.png)
+
+MapView에서 SET_MAP으로 공유한 지도와 센서 목록을 기반으로 테이블·마커를 구성합니다. 원본 FlvlList는 WeakMap에 센서 객체와 마커를 연결하며, 테이블 클릭 시 대상 마커를 찾아 지도 이동 → 클러스터 표시 → 팝업 열기를 수행합니다. 선택 ID를 action/mutation으로 공유하는 공개 예시와 원본의 직접 마커 제어 방식을 구분하여 설명합니다.
+
+[상세 설명 및 실행 예시](https://amazingbread.github.io/city-safety-on/#markers) · [원본 코드 발췌](projects/city-safety/table-marker-source.txt)

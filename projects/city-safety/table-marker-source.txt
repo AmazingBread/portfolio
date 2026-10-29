@@ -1,0 +1,60 @@
+Source: vue/src/components/SensorDataBox/FlvlList.vue
+Original read-only excerpts; not a standalone module.
+
+Lines 440–458: sensor / marker association
+
+                if(group.items.length === 1){
+                    marker = this.createSingleMarker(
+                        group.items[0]
+                    );
+                }else{
+                    marker = this.createGroupMarker(group);
+                }
+
+                group.items.forEach((data) => {
+                    this.flvlMarkerMap.set(
+                        data,
+                        marker
+                    );
+                });
+
+                clusterLayer.addLayer(marker);
+
+                /*
+
+Lines 870–904: table row → marker → popup
+        sensorFindMarker(sensorData) {
+            const map = this.$store.state.map;
+            const clusterLayer = this.$store.state.flvlLayer;
+
+            if (!map) {
+                console.warn('지도 객체가 아직 생성되지 않았습니다.');
+                return;
+            }
+
+            if (!clusterLayer) {
+                console.warn('해당 레이어가 아직 로드되지 않았습니다.');
+                return;
+            }
+
+            const targetMarker = this.flvlMarkerMap.get(sensorData);
+
+            if (!targetMarker) {
+                console.warn('해당 센서의 마커를 찾을 수 없습니다.', sensorData);
+                return;
+            }
+
+            const latlng = targetMarker.getLatLng();
+
+            map.setView(latlng, 13);
+
+            clusterLayer.zoomToShowLayer(targetMarker, () => {
+                // 그룹 마커든 일반 마커든
+                // 선택한 센서의 기존 Popup 디자인 사용
+                targetMarker.setPopupContent(
+                    this.getSensorPopupContent(sensorData)
+                );
+
+                targetMarker.openPopup();
+            });
+        },
